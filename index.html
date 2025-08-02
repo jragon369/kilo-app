@@ -817,18 +817,15 @@
                             <span style="color: #4CAF50; font-size: 10px;">connected to 1,248 human nodes</span>
                         </div>
                        
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                            <div style="text-align: center;">
-                                <div style="font-size: 14px; color: #ccc; margin-bottom: 16px;">K is ready to assist with KILO protocol questions</div>
-                                <button onclick="window.open('https://www.chatbase.co/chatbot-iframe/u2FE20IFibqz6cbARRZZy', '_blank', 'width=400,height=600')" 
-                                        style="padding: 12px 24px; background: #8B0000; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; transition: all 0.2s;">
-                                    Talk to K
-                                </button>
+                        <div style="flex: 1; padding: 16px; overflow-y: auto;">
+                            <div style="background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px;">
+                                My name is K, the Chief Protocol Officer for KILO. How can I assist?
                             </div>
-                            
-                            <div style="background: #333; padding: 12px 16px; border-radius: 16px; font-size: 14px; max-width: 80%;">
-                                My name is K, the Chief Protocol Officer for KILO. Click above to chat with me about human sovereignty, proof of human verification, and building collectives on Bitcoin.
-                            </div>
+                        </div>
+                       
+                        <div style="padding: 16px; border-top: 1px solid #333; display: flex; align-items: center; gap: 12px; background: #111;">
+                            <input type="text" placeholder="Message K..." style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 12px 16px; border-radius: 20px; font-size: 14px; outline: none;" onkeypress="handleMessageInput(event)">
+                            <button onclick="sendMessage()" style="width: 40px; height: 40px; background: #8B0000; border: none; border-radius: 50%; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer;">→</button>
                         </div>
                     </div>
                 </div>
