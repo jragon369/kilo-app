@@ -308,8 +308,7 @@
             border-color: #8B0000;
         }
        
-        .mint-button.capturing .mint-icon,
-        .mint-button.capturing .mint-text {
+        .mint-button.capturing > div:first-child {
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -641,8 +640,10 @@
                                 <div class="kilo-earned" id="kiloEarned" style="display: none; position: absolute; bottom: 460px; left: 50%; transform: translateX(-50%); text-align: center;">+3 KILO</div>
                                 <div class="mint-button-container">
                                     <div class="mint-button" id="mintButton">
-                                        <div class="mint-icon">🏰</div>
-                                        <div class="mint-text">LAS VEGAS</div>
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">KILO CLUB</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">LAS VEGAS</div>
+                                        </div>
                                         <div class="capture-overlay" id="captureOverlay"></div>
                                     </div>
                                 </div>
