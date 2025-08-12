@@ -196,7 +196,7 @@
         }
         
         .verify-text {
-            font-size: 16px;
+            font-size: 13.6px;
             color: #fff;
             opacity: 0;
             transition: opacity 0.3s ease;
@@ -204,11 +204,11 @@
         }
         
         .verify-text.visible {
-            opacity: 1;
+            opacity: 0.7;
         }
         
         .countdown-text {
-            font-size: 16px;
+            font-size: 13.6px;
             font-weight: normal;
             color: #fff;
             opacity: 0;
@@ -216,19 +216,19 @@
         }
         
         .countdown-text.active {
-            opacity: 1;
+            opacity: 0.7;
         }
         
         .verified-text {
-            font-size: 16px;
+            font-size: 13.6px;
             font-weight: normal;
             color: #fff;
             margin-bottom: 2px;
         }
         
         .kilo-earned {
-            font-size: 16px;
-            font-weight: normal;
+            font-size: 11.9px;
+            font-weight: bold;
             color: #4CAF50;
         }
        
@@ -254,7 +254,7 @@
                 .mint-screens {
             display: flex;
             height: 100%;
-            gap: 5px;
+            gap: 2.5px;
         }
         
         .mint-screen {
@@ -622,31 +622,8 @@
                     </div>
                    
                     <div style="padding: 2px; height: calc(100% - 140px); overflow-y: auto;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); position: relative; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">
-                                <div style="position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #f7931a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #000;">✓</div>
-                                @alex_pr
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); position: relative; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #333;">
-                                <div style="position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #f7931a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #000;">✓</div>
-                                @maria_fit
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FFB74D, #FFA726); position: relative; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">
-                                <div style="position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #f7931a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #000;">✓</div>
-                                @jordan_k
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #9C27B0, #673AB7); position: relative; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">
-                                <div style="position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #f7931a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #000;">✓</div>
-                                @sam_strong
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #26A69A, #00BCD4); position: relative; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">
-                                <div style="position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #f7931a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #000;">✓</div>
-                                @lisa_moves
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF7043, #FF5722); position: relative; display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">
-                                <div style="position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; background: #f7931a; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 6px; color: #000;">✓</div>
-                                @mike_gains
-                            </div>
+                        <div id="momentsGrid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
+                            <!-- Moments will be generated here by JavaScript -->
                         </div>
                     </div>
                 </div>
@@ -893,6 +870,10 @@
                         startProximityDemo();
                     }
                 }, 500);
+            }
+            
+            if (sectionName === 'connect') {
+                generateMoments();
             }
         }
 
