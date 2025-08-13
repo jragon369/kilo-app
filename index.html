@@ -251,23 +251,59 @@
             display: none;
         }
        
-                .mint-screens {
+        /* FIXED: Better scroll container and screen setup */
+        .mint-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+        }
+        
+        .mint-container::-webkit-scrollbar {
+            display: none;
+        }
+       
+        .mint-screens {
             display: flex;
             height: 100%;
-            gap: 2.5px;
+            align-items: center;
+        }
+        
+        .mint-spacer {
+            min-width: calc(50% - 100px);
+            width: calc(50% - 100px);
+            height: 100%;
+            flex-shrink: 0;
         }
         
         .mint-screen {
-            min-width: 100%;
-            width: 100%;
+            min-width: 200px;
+            width: 200px;
             height: 100%;
-            scroll-snap-align: start;
+            scroll-snap-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
             flex-shrink: 0;
+            margin: 0 60px; /* Increased from 20px to 60px for more spacing */
+        }
+        
+        .mint-screen:first-of-type {
+            margin-left: 0;
+        }
+        
+        .mint-screen:last-of-type {
+            margin-right: 0;
         }
        
         .mint-button-container {
@@ -450,6 +486,11 @@
             color: #666;
         }
 
+        /* Add CSS to hide scrollbars for the moments grid */
+        .connect-section > div:last-child::-webkit-scrollbar {
+            display: none;
+        }
+        
         /* Network status indicator */
         .network-status {
             display: flex;
@@ -473,385 +514,15 @@
             50% { opacity: 0.3; }
         }
     </style>
-</head>
-<body>
-    <div class="phone-frame">
-        <div class="screen">
-            <div class="status-bar">
-                <span>9:41</span>
-                <span>KILO</span>
-                <span>100%</span>
-            </div>
-           
-            <div class="main-content">
-                <!-- HOME SECTION -->
-                <div class="section home-section active">
-                    <div style="padding: 20px; position: relative;">
-                        <!-- Gear Icon - Top Right Corner -->
-                        <div style="position: absolute; top: 20px; right: 20px; color: #666; font-size: 18px; cursor: pointer;">⚙️</div>
-                       
-                        <!-- Profile Picture -->
-                        <div style="width: 80px; height: 80px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                            <svg width="40" height="50" viewBox="0 0 40 50">
-                                <path d="M5 8 L20 23 L5 38" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                <path d="M20 23 L35 8" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                <path d="M20 23 L20 42" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                <path d="M20 23 L35 38" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                            </svg>
-                        </div>
-                       
-                        <!-- Kilo Protocol with checkmark -->
-                        <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
-                            <span style="font-size: 16.1px; color: #888;">Kilo Protocol</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" style="fill: #8B0000;">
-                                <path d="M17.5 3.5L22 12L17.5 20.5H6.5L2 12L6.5 3.5H17.5Z" fill="#8B0000"/>
-                                <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                       
-                        <!-- Username -->
-                        <div style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px;">@kilo</div>
-                       
-                        <!-- Location -->
-                        <div style="font-size: 14px; color: #888; margin-bottom: 16px;">Las Vegas, NV</div>
-                       
-                        <!-- Stats -->
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                            <div style="text-align: left;">
-                                <div style="font-size: 15.3px; font-weight: bold; color: #888;">1.1.001</div>
-                                <div style="font-size: 12px; color: #888;">Avatar (LVL.3)</div>
-                            </div>
-                            <div style="text-align: center;">
-                                <div style="font-size: 15.3px; font-weight: bold; color: #fff;">12</div>
-                                <div style="font-size: 12px; color: #888;">Mints</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div style="font-size: 15.3px; font-weight: bold; color: #fff;">180</div>
-                                <div style="font-size: 12px; color: #888;">Connections</div>
-                            </div>
-                        </div>
-                       
-                        <!-- Top Border Line -->
-                        <div style="border-top: 1px solid #333; margin-bottom: 20px;"></div>
-                       
-                        <!-- Horizontal Scrolling Connections -->
-                        <div class="connections-scroll-container">
-                            <div class="connections-scroll">
-                                <div class="connection-item">
-                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@alex</div>
-                                </div>
-                                <div class="connection-item">
-                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 8px; font-weight: 600;">@maria</div>
-                                </div>
-                                <div class="connection-item">
-                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #FFB74D, #FFA726); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@jordan</div>
-                                </div>
-                                <div class="connection-item">
-                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #9C27B0, #673AB7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@sam</div>
-                                </div>
-                                <div class="connection-item">
-                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #26A69A, #00BCD4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@lisa</div>
-                                </div>
-                                <div class="connection-item">
-                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF7043, #FF5722); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@mike</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <!-- Content Grid -->
-                    <div style="border-top: 1px solid #333;">
-                        <div style="display: flex; justify-content: center; padding: 12px 0; border-bottom: 1px solid #333;">
-                            <div style="padding: 8px 16px; border-bottom: 2px solid #fff; color: #fff; font-size: 14px;">⊞</div>
-                        </div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative;">
-                                <div class="live-indicator"></div>
-                                PR
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #333;">WIN</div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FFB74D, #FFA726); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative;">
-                                <div class="live-indicator"></div>
-                                LIFT
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #9C27B0, #673AB7); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">RACE</div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #26A69A, #00BCD4); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative;">
-                                <div class="live-indicator"></div>
-                                TEAM
-                            </div>
-                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF7043, #FF5722); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">MINT</div>
-                        </div>
-                    </div>
-                </div>
-               
-                <!-- CONNECT SECTION -->
-                <div class="section connect-section">
-                    <!-- Real-time Mints - Horizontally Scrollable -->
-                    <div class="connections-scroll-container" style="margin-bottom: 20px; padding: 8px 0;">
-                        <div class="connections-scroll" style="padding: 8px 20px;">
-                            <div class="connection-item">
-                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@alex</div>
-                            </div>
-                            <div class="connection-item">
-                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 8px; font-weight: 600;">@maria</div>
-                            </div>
-                            <div class="connection-item">
-                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #FFB74D, #FFA726); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@jordan</div>
-                            </div>
-                            <div class="connection-item">
-                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #9C27B0, #673AB7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@sam</div>
-                            </div>
-                            <div class="connection-item">
-                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #26A69A, #00BCD4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@lisa</div>
-                            </div>
-                            <div class="connection-item">
-                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF7043, #FF5722); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@mike</div>
-                            </div>
-                        </div>
-                    </div>
-                   
-                    <div style="padding: 12px 16px; border-bottom: 1px solid #333;">
-                        <div class="search-container">
-                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24">
-                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                            <input type="text" placeholder="Search..." />
-                        </div>
-                    </div>
-                   
-                    <div style="padding: 2px; height: calc(100% - 140px); overflow-y: auto;">
-                        <div id="momentsGrid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
-                            <!-- Moments will be generated here by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-               
-                <!-- MINT SECTION -->
-                <div class="section mint-section">
-                    <div class="mint-container" id="mintContainer">
-                        <div class="mint-screens">
-                            <div class="mint-screen">
-                                <div class="mint-status-text">
-                                    <div class="verify-text" id="verifyText">VERIFY LOCATION...</div>
-                                    <div class="countdown-text" id="countdownText"></div>
-                                    <div class="verified-text" id="verifiedText" style="display: none;">VERIFIED</div>
-                                </div>
-                                <div class="kilo-earned" id="kiloEarned" style="display: none; position: absolute; bottom: 460px; left: 50%; transform: translateX(-50%); text-align: center;">+3 KILO</div>
-                                <div class="mint-button-container">
-                                    <div class="mint-button" id="mintButton">
-                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">KILO CLUB</div>
-                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">LAS VEGAS</div>
-                                        </div>
-                                        <div class="capture-overlay" id="captureOverlay"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mint-screen">
-                                <div class="mint-button-container">
-                                    <div class="mint-button" style="background: #1a1a1a; border: 3px solid #fff; animation: none;">
-                                        <div class="mint-text" style="color: #fff;">HONOLULU</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mint-screen">
-                                <div class="mint-button-container">
-                                    <div class="mint-button" style="background: #1a1a1a; border: 3px solid #fff; animation: none;">
-                                        <div class="mint-text" style="color: #fff;">FREE THROWS</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="mint-screen">
-                                <div class="mint-button-container">
-                                    <div class="mint-button" style="background: #1a1a1a; border: 3px solid #fff; animation: none;">
-                                        <div class="mint-text" style="color: #fff;">NYC</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-               
-                <!-- WALLET SECTION -->
-                <div class="section wallet-section">
-                    <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px; height: 100%; overflow-y: auto;">
-                        <!-- Avatar -->
-                        <div style="background: #111; padding: 20px; border-radius: 16px; text-align: center;">
-                            <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #FFB74D, #9C27B0); border-radius: 16px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 18px;"></div>
-                            <div style="font-size: 14px; color: #fff; font-weight: 600;">Avatar #1.1.001</div>
-                        </div>
-                       
-                        <!-- Balances / Convert Interface -->
-                        <div id="balancesSection" style="background: #111; padding: 20px; border-radius: 16px;">
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333;">
-                                <span style="font-size: 14px; color: #888;">KILO</span>
-                                <span style="font-size: 16px; font-weight: 600; color: #fff;">1,247</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333;">
-                                <span style="font-size: 14px; color: #888;">USD</span>
-                                <span style="font-size: 16px; font-weight: 600; color: #fff;">$1,247</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333;">
-                                <span style="font-size: 14px; color: #888;">TREASURY</span>
-                                <span style="font-size: 16px; font-weight: 600; color: #fff;">48 BTC</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; padding: 12px 0;">
-                                <span style="font-size: 14px; color: #888;">NETWORK</span>
-                                <span style="font-size: 16px; font-weight: 600; color: #fff;">210 BTC</span>
-                            </div>
-                        </div>
-                       
-                        <!-- Convert Interface (hidden by default) -->
-                        <div id="convertInterface" style="background: #111; padding: 20px; border-radius: 16px; display: none;">
-                            <div style="margin-bottom: 16px;">
-                                <label style="display: block; color: #888; font-size: 14px; margin-bottom: 8px;">From</label>
-                                <div style="display: flex; background: #222; border-radius: 8px; border: 1px solid #333; overflow: hidden;">
-                                    <input type="number" value="1000" style="flex: 1; background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 600; padding: 12px; outline: none; max-width: calc(100% - 80px);" />
-                                    <div style="display: flex; align-items: center; padding: 8px 12px; background: #333; color: #fff; font-weight: 600; width: 80px; justify-content: flex-start; font-size: 14px;">
-                                        <span>KILO</span>
-                                    </div>
-                                </div>
-                                <div style="color: #666; font-size: 12px; margin-top: 4px;">Balance: 1,247 KILO</div>
-                            </div>
-                           
-                            <div style="display: flex; justify-content: center; margin: 10px 0;">
-                                <svg width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M12 5v14m7-7l-7 7-7-7" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                           
-                            <div style="margin-bottom: 16px;">
-                                <label style="display: block; color: #888; font-size: 14px; margin-bottom: 8px;">To</label>
-                                <div style="display: flex; background: #222; border-radius: 8px; border: 1px solid #333; overflow: hidden;">
-                                    <input type="number" value="0.01" style="flex: 1; background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 600; padding: 12px; outline: none; max-width: calc(100% - 80px);" readonly />
-                                    <div style="display: flex; align-items: center; padding: 8px 12px; background: #333; color: #fff; font-weight: 600; width: 80px; justify-content: flex-start; font-size: 14px;">
-                                        <span>BTC</span>
-                                    </div>
-                                </div>
-                                <div style="color: #666; font-size: 12px; margin-top: 4px;">1 KILO = 0.00001 BTC</div>
-                            </div>
-                           
-                            <div style="background: #1a1a1a; border-radius: 8px; padding: 12px; margin: 16px 0;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #ccc; font-size: 14px;">
-                                    <span>Network Fee (3%)</span>
-                                    <span>30 KILO</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 0; font-weight: 600; color: #fff; font-size: 14px;">
-                                    <span>You'll receive</span>
-                                    <span>0.0097 BTC</span>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <!-- Convert Button -->
-                        <button onclick="toggleConvertInterface()" id="convertBtn" style="width: auto; padding: 12px 24px; background: #fff; color: #000; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; align-self: center;">Convert</button>
-                       
-                        <!-- Minted Moments -->
-                        <div id="mintedMoments" style="display: flex; gap: 12px; justify-content: center;">
-                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: white;">
-                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
-                                PR
-                            </div>
-                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #333;">
-                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
-                                WIN
-                            </div>
-                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFB74D, #FFA726); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: white;">
-                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
-                                LIFT
-                            </div>
-                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #9C27B0, #673AB7); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: white;">
-                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
-                                RACE
-                            </div>
-                        </div>
-                    </div>
-                </div>
-               
-                <!-- AI SECTION -->
-                <div class="section ai-section">
-                    <div style="display: flex; flex-direction: column; height: 100%;">
-                        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333;">
-                            <div style="width: 32px; height: 32px; background: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
-                                <div style="font-size: 16px; font-weight: 600; color: #8B0000;">K</div>
-                            </div>
-                            <div style="font-size: 12px; color: #888;">Chief Protocol Officer</div>
-                        </div>
-                       
-                        <div class="network-status">
-                            <div class="network-dot"></div>
-                            <span style="color: #4CAF50; font-size: 10px;">connected to 1,248 human nodes</span>
-                        </div>
-                       
-                        <div style="flex: 1; padding: 16px; overflow-y: auto;" id="chatContainer">
-                            <div style="background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px;">
-                                My name is K, the Chief Protocol Officer for KILO. How can I assist?
-                            </div>
-                        </div>
-                       
-                        <div style="padding: 16px; border-top: 1px solid #333; display: flex; align-items: center; gap: 12px; background: #111;">
-                            <input type="text" placeholder="Message K..." style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 12px 16px; border-radius: 20px; font-size: 14px; outline: none;" onkeypress="handleMessageInput(event)" id="messageInput">
-                            <button onclick="sendMessage()" style="width: 40px; height: 40px; background: #8B0000; border: none; border-radius: 50%; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer;">→</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-            <div class="bottom-nav">
-                <div class="nav-item active" onclick="showSection('home')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
-                        <path d="M12 3l8 7v11h-5v-6h-6v6H4V10l8-7z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Home</span>
-                </div>
-                <div class="nav-item" onclick="showSection('connect')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
-                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span>Connect</span>
-                </div>
-                <div class="nav-item mint-nav" onclick="showSection('mint')" style="position: relative;">
-                    <div class="mint-nav-ring" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 2px solid #666; border-radius: 50%; opacity: 0.5;"></div>
-                    <svg width="28" height="32" viewBox="0 0 40 50" style="opacity: 0.8; position: relative; z-index: 1;">
-                        <path d="M8 12 L20 24 L8 36" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <path d="M20 24 L32 12" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <path d="M20 24 L20 40" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        <path d="M20 24 L32 36" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                    </svg>
-                </div>
-                <div class="nav-item" onclick="showSection('wallet')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
-                        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                        <circle cx="16" cy="12" r="2" fill="currentColor"/>
-                    </svg>
-                    <span>Wallet</span>
-                </div>
-                <div class="nav-item ai-nav" onclick="showSection('ai')">
-                    <svg width="27.6" height="27.6" viewBox="0 0 24 24" style="opacity: 0.8;">
-                        <rect x="4" y="4" width="16" height="12" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
-                        <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
-                        <path d="M8 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M12 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M10 20h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <span>AI</span>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
+        // Global variables
         let isInProximity = false;
         let isMinting = false;
         let currentKilo = 99;
+        let pressTimer;
+        let hapticInterval;
 
+        // Define all global functions first
         function showSection(sectionName) {
             document.querySelectorAll('.section').forEach(section => {
                 section.classList.remove('active');
@@ -870,11 +541,73 @@
                     if (!isInProximity) {
                         startProximityDemo();
                     }
-                }, 500);
+                    // Scroll to the first item (Las Vegas) when entering mint section
+                    const mintContainer = document.getElementById('mintContainer');
+                    if (mintContainer) {
+                        mintContainer.scrollLeft = 0;
+                    }
+                }, 100);
             }
             
             if (sectionName === 'connect') {
                 generateMoments();
+            }
+        }
+
+        function generateMoments() {
+            const momentsGrid = document.getElementById('momentsGrid');
+            if (!momentsGrid || momentsGrid.children.length > 0) return; // Don't regenerate if already populated
+            
+            const gradients = [
+                'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                'linear-gradient(45deg, #A8E6CF, #DCEDC8)',
+                'linear-gradient(45deg, #FFB74D, #FFA726)',
+                'linear-gradient(45deg, #9C27B0, #673AB7)',
+                'linear-gradient(45deg, #26A69A, #00BCD4)',
+                'linear-gradient(45deg, #FF7043, #FF5722)',
+                'linear-gradient(45deg, #EC407A, #AB47BC)',
+                'linear-gradient(45deg, #5C6BC0, #42A5F5)',
+                'linear-gradient(45deg, #66BB6A, #9CCC65)'
+            ];
+            
+            const labels = ['PR', 'WIN', 'LIFT', 'RACE', 'TEAM', 'MINT', 'RUN', 'SWIM', 'BIKE'];
+            
+            // Generate 18 moment tiles
+            for (let i = 0; i < 18; i++) {
+                const momentDiv = document.createElement('div');
+                momentDiv.style.cssText = `
+                    aspect-ratio: 1;
+                    background: ${gradients[i % gradients.length]};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                    color: ${i % 2 === 1 ? '#333' : 'white'};
+                    position: relative;
+                    cursor: pointer;
+                    transition: transform 0.2s ease;
+                `;
+                
+                // Add live indicator to some tiles
+                if (Math.random() > 0.6) {
+                    const liveIndicator = document.createElement('div');
+                    liveIndicator.className = 'live-indicator';
+                    momentDiv.appendChild(liveIndicator);
+                }
+                
+                const label = document.createElement('span');
+                label.textContent = labels[i % labels.length];
+                momentDiv.appendChild(label);
+                
+                // Add hover effect
+                momentDiv.addEventListener('mouseenter', () => {
+                    momentDiv.style.transform = 'scale(1.05)';
+                });
+                momentDiv.addEventListener('mouseleave', () => {
+                    momentDiv.style.transform = 'scale(1)';
+                });
+                
+                momentsGrid.appendChild(momentDiv);
             }
         }
 
@@ -1087,13 +820,16 @@
             }
         }
 
-        let pressTimer;
-        let hapticInterval;
-       
+        // Set up event listeners after DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             const mintButton = document.getElementById('mintButton');
             if (mintButton) {
-                mintButton.addEventListener('mousedown', (e) => {
+                // Remove any existing listeners first
+                const newMintButton = mintButton.cloneNode(true);
+                mintButton.parentNode.replaceChild(newMintButton, mintButton);
+                
+                // Add fresh event listeners
+                newMintButton.addEventListener('mousedown', (e) => {
                     if (isInProximity && !isMinting) {
                         lightHaptic();
                         hapticInterval = setInterval(lightHaptic, 200);
@@ -1104,17 +840,17 @@
                     }
                 });
                
-                mintButton.addEventListener('mouseup', () => {
+                newMintButton.addEventListener('mouseup', () => {
                     clearTimeout(pressTimer);
                     clearInterval(hapticInterval);
                 });
                
-                mintButton.addEventListener('mouseleave', () => {
+                newMintButton.addEventListener('mouseleave', () => {
                     clearTimeout(pressTimer);
                     clearInterval(hapticInterval);
                 });
                
-                mintButton.addEventListener('touchstart', (e) => {
+                newMintButton.addEventListener('touchstart', (e) => {
                     e.preventDefault();
                     if (isInProximity && !isMinting) {
                         lightHaptic();
@@ -1126,23 +862,697 @@
                     }
                 });
                
-                mintButton.addEventListener('touchend', (e) => {
+                newMintButton.addEventListener('touchend', (e) => {
                     e.preventDefault();
                     clearTimeout(pressTimer);
                     clearInterval(hapticInterval);
                 });
                
-                mintButton.addEventListener('touchcancel', (e) => {
+                newMintButton.addEventListener('touchcancel', (e) => {
                     e.preventDefault();
                     clearTimeout(pressTimer);
                     clearInterval(hapticInterval);
+                });
+                
+                // Add click handler for desktop
+                newMintButton.addEventListener('click', (e) => {
+                    if (isInProximity && !isMinting) {
+                        startMintDemo();
+                    }
                 });
             }
+            
+            // Start proximity demo after a delay
+            setTimeout(() => {
+                startProximityDemo();
+                // Also ensure we start at Las Vegas on initial load
+                const mintContainer = document.getElementById('mintContainer');
+                if (mintContainer) {
+                    mintContainer.scrollLeft = 0;
+                }
+            }, 1000);
         });
-
-        setTimeout(() => {
-            startProximityDemo();
-        }, 1000);
     </script>
-</body>
-</html>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="screen">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>KILO</span>
+                <span>100%</span>
+            </div>
+           
+            <div class="main-content">
+                <!-- HOME SECTION -->
+                <div class="section home-section active">
+                    <div style="padding: 20px; position: relative;">
+                        <!-- Gear Icon - Top Right Corner -->
+                        <div style="position: absolute; top: 20px; right: 20px; color: #666; font-size: 18px; cursor: pointer;">⚙️</div>
+                       
+                        <!-- Profile Picture -->
+                        <div style="width: 80px; height: 80px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                            <svg width="40" height="50" viewBox="0 0 40 50">
+                                <path d="M5 8 L20 23 L5 38" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <path d="M20 23 L35 8" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <path d="M20 23 L20 42" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <path d="M20 23 L35 38" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                            </svg>
+                        </div>
+                       
+                        <!-- Kilo Protocol with checkmark -->
+                        <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
+                            <span style="font-size: 16.1px; color: #888;">Kilo Protocol</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" style="fill: #8B0000;">
+                                <path d="M17.5 3.5L22 12L17.5 20.5H6.5L2 12L6.5 3.5H17.5Z" fill="#8B0000"/>
+                                <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                       
+                        <!-- Username -->
+                        <div style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px;">@kilo</div>
+                       
+                        <!-- Location -->
+                        <div style="font-size: 14px; color: #888; margin-bottom: 16px;">Las Vegas, NV</div>
+                       
+                        <!-- Stats -->
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                            <div style="text-align: left;">
+                                <div style="font-size: 15.3px; font-weight: bold; color: #888;">1.1.001</div>
+                                <div style="font-size: 12px; color: #888;">Avatar (LVL.3)</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 15.3px; font-weight: bold; color: #fff;">12</div>
+                                <div style="font-size: 12px; color: #888;">Mints</div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 15.3px; font-weight: bold; color: #fff;">180</div>
+                                <div style="font-size: 12px; color: #888;">Connections</div>
+                            </div>
+                        </div>
+                       
+                        <!-- Top Border Line -->
+                        <div style="border-top: 1px solid #333; margin-bottom: 20px;"></div>
+                       
+                        <!-- Horizontal Scrolling Connections -->
+                        <div class="connections-scroll-container">
+                            <div class="connections-scroll">
+                                <div class="connection-item">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@alex</div>
+                                </div>
+                                <div class="connection-item">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 8px; font-weight: 600;">@maria</div>
+                                </div>
+                                <div class="connection-item">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #FFB74D, #FFA726); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@jordan</div>
+                                </div>
+                                <div class="connection-item">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #9C27B0, #673AB7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@sam</div>
+                                </div>
+                                <div class="connection-item">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #26A69A, #00BCD4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@lisa</div>
+                                </div>
+                                <div class="connection-item">
+                                    <div style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF7043, #FF5722); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@mike</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <!-- Content Grid -->
+                    <div style="border-top: 1px solid #333;">
+                        <div style="display: flex; justify-content: center; padding: 12px 0; border-bottom: 1px solid #333;">
+                            <div style="padding: 8px 16px; border-bottom: 2px solid #fff; color: #fff; font-size: 14px;">⊞</div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative;">
+                                <div class="live-indicator"></div>
+                                PR
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); display: flex; align-items: center; justify-content: center; font-size: 10px; color: #333;">WIN</div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FFB74D, #FFA726); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative;">
+                                <div class="live-indicator"></div>
+                                LIFT
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #9C27B0, #673AB7); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">RACE</div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #26A69A, #00BCD4); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative;">
+                                <div class="live-indicator"></div>
+                                TEAM
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF7043, #FF5722); display: flex; align-items: center; justify-content: center; font-size: 10px; color: white;">MINT</div>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- CONNECT SECTION -->
+                <div class="section connect-section">
+                    <!-- Real-time Mints - Horizontally Scrollable -->
+                    <div class="connections-scroll-container" style="margin-bottom: 15px; padding: 8px 0;">
+                        <div class="connections-scroll" style="padding: 8px 20px;">
+                            <div class="connection-item">
+                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@alex</div>
+                            </div>
+                            <div class="connection-item">
+                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; font-size: 8px; font-weight: 600;">@maria</div>
+                            </div>
+                            <div class="connection-item">
+                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #FFB74D, #FFA726); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@jordan</div>
+                            </div>
+                            <div class="connection-item">
+                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #9C27B0, #673AB7); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@sam</div>
+                            </div>
+                            <div class="connection-item">
+                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #26A69A, #00BCD4); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@lisa</div>
+                            </div>
+                            <div class="connection-item">
+                                <div class="profile-ring active" style="width: 50px; height: 50px; background: linear-gradient(45deg, #FF7043, #FF5722); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 8px; font-weight: 600;">@mike</div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div style="padding: 10px 16px 15px 16px; border-bottom: 1px solid #333;">
+                        <div class="search-container">
+                            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24">
+                                <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <input type="text" placeholder="Search..." />
+                        </div>
+                    </div>
+                   
+                    <div style="padding: 2px; height: calc(100% - 155px); overflow-y: auto; padding-bottom: 20px; scrollbar-width: none; -ms-overflow-style: none;">
+                        <div id="momentsGrid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
+                            <!-- Moments will be generated here by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- MINT SECTION - ALL 9 SCREENS INCLUDED -->
+                <div class="section mint-section">
+                    <div class="mint-container" id="mintContainer">
+                        <div class="mint-screens">
+                            <!-- Spacer for centering first item -->
+                            <div class="mint-spacer"></div>
+                            
+                            <!-- 1. KILO CLUB LAS VEGAS (Interactive) -->
+                            <div class="mint-screen">
+                                <div class="mint-status-text">
+                                    <div class="verify-text" id="verifyText">VERIFY LOCATION ...</div>
+                                    <div class="countdown-text" id="countdownText"></div>
+                                    <div class="verified-text" id="verifiedText" style="display: none;">VERIFIED</div>
+                                </div>
+                                <div class="kilo-earned" id="kiloEarned" style="display: none; position: absolute; bottom: 470px; left: 50%; transform: translateX(-50%); text-align: center;">+3 KILO</div>
+                                <div class="mint-button-container">
+                                    <div class="mint-button" id="mintButton">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">KILO CLUB</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">LAS VEGAS</div>
+                                        </div>
+                                        <div class="capture-overlay" id="captureOverlay"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 2. KILO CLUB NYC -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">KILO CLUB</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">NYC</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 3. KILO CLUB HONOLULU -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">KILO CLUB</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">HONOLULU</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 4. BASKETBALL GLOBAL -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">BASKETBALL</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">GLOBAL</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 5. FOOTBALL GLOBAL -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">FOOTBALL</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">GLOBAL</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 6. FITNESS GLOBAL -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">FITNESS</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">GLOBAL</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 7. ARTISTS TOKYO -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">ARTISTS</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">TOKYO</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 8. MUSICIANS VIENNA -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">MUSICIANS</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">VIENNA</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 9. BALLROOM BRAZIL -->
+                            <div class="mint-screen">
+                                <div class="mint-button-container">
+                                    <div class="mint-button" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border: 3px solid #8B0000;">
+                                        <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                                            <div style="font-size: 17px; font-weight: 300; letter-spacing: 8px; color: #fff; margin-bottom: 8px; margin-left: 8px;">BALLROOM</div>
+                                            <div style="font-size: 12px; font-weight: 400; letter-spacing: 2px; color: #fff; opacity: 0.7; margin-left: 2px;">BRAZIL</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Spacer for centering last item -->
+                            <div class="mint-spacer"></div>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- WALLET SECTION -->
+                <div class="section wallet-section">
+                    <div style="padding: 20px; display: flex; flex-direction: column; gap: 20px; height: 100%; overflow-y: auto;">
+                        <!-- Avatar -->
+                        <div style="background: #111; padding: 20px; border-radius: 16px; text-align: center;">
+                            <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #FFB74D, #9C27B0); border-radius: 16px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 18px;"></div>
+                            <div style="font-size: 14px; color: #fff; font-weight: 600;">Avatar #1.1.001</div>
+                        </div>
+                       
+                        <!-- Balances / Convert Interface -->
+                        <div id="balancesSection" style="background: #111; padding: 20px; border-radius: 16px;">
+                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333;">
+                                <span style="font-size: 14px; color: #888;">KILO</span>
+                                <span style="font-size: 16px; font-weight: 600; color: #fff;">1,247</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333;">
+                                <span style="font-size: 14px; color: #888;">USD</span>
+                                <span style="font-size: 16px; font-weight: 600; color: #fff;">$1,247</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #333;">
+                                <span style="font-size: 14px; color: #888;">TREASURY</span>
+                                <span style="font-size: 16px; font-weight: 600; color: #fff;">48 BTC</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; padding: 12px 0;">
+                                <span style="font-size: 14px; color: #888;">NETWORK</span>
+                                <span style="font-size: 16px; font-weight: 600; color: #fff;">210 BTC</span>
+                            </div>
+                        </div>
+                       
+                        <!-- Convert Interface (hidden by default) -->
+                        <div id="convertInterface" style="background: #111; padding: 20px; border-radius: 16px; display: none;">
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #888; font-size: 14px; margin-bottom: 8px;">From</label>
+                                <div style="display: flex; background: #222; border-radius: 8px; border: 1px solid #333; overflow: hidden;">
+                                    <input type="number" value="1000" style="flex: 1; background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 600; padding: 12px; outline: none; max-width: calc(100% - 80px);" />
+                                    <div style="display: flex; align-items: center; padding: 8px 12px; background: #333; color: #fff; font-weight: 600; width: 80px; justify-content: flex-start; font-size: 14px;">
+                                        <span>KILO</span>
+                                    </div>
+                                </div>
+                                <div style="color: #666; font-size: 12px; margin-top: 4px;">Balance: 1,247 KILO</div>
+                            </div>
+                           
+                            <div style="display: flex; justify-content: center; margin: 10px 0;">
+                                <svg width="24" height="24" viewBox="0 0 24 24">
+                                    <path d="M12 5v14m7-7l-7 7-7-7" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                           
+                            <div style="margin-bottom: 16px;">
+                                <label style="display: block; color: #888; font-size: 14px; margin-bottom: 8px;">To</label>
+                                <div style="display: flex; background: #222; border-radius: 8px; border: 1px solid #333; overflow: hidden;">
+                                    <input type="number" value="0.01" style="flex: 1; background: transparent; border: none; color: #fff; font-size: 16px; font-weight: 600; padding: 12px; outline: none; max-width: calc(100% - 80px);" readonly />
+                                    <div style="display: flex; align-items: center; padding: 8px 12px; background: #333; color: #fff; font-weight: 600; width: 80px; justify-content: flex-start; font-size: 14px;">
+                                        <span>BTC</span>
+                                    </div>
+                                </div>
+                                <div style="color: #666; font-size: 12px; margin-top: 4px;">1 KILO = 0.00001 BTC</div>
+                            </div>
+                           
+                            <div style="background: #1a1a1a; border-radius: 8px; padding: 12px; margin: 16px 0;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #ccc; font-size: 14px;">
+                                    <span>Network Fee (3%)</span>
+                                    <span>30 KILO</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0; font-weight: 600; color: #fff; font-size: 14px;">
+                                    <span>You'll receive</span>
+                                    <span>0.0097 BTC</span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <!-- Convert Button -->
+                        <button onclick="toggleConvertInterface()" id="convertBtn" style="width: auto; padding: 12px 24px; background: #fff; color: #000; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; align-self: center;">Convert</button>
+                       
+                        <!-- Minted Moments -->
+                        <div id="mintedMoments" style="display: flex; gap: 12px; justify-content: center;">
+                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: white;">
+                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
+                                PR
+                            </div>
+                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #A8E6CF, #DCEDC8); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #333;">
+                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
+                                WIN
+                            </div>
+                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #FFB74D, #FFA726); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: white;">
+                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
+                                LIFT
+                            </div>
+                            <div style="width: 60px; height: 60px; background: linear-gradient(45deg, #9C27B0, #673AB7); border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; font-size: 8px; color: white;">
+                                <div style="position: absolute; top: 3px; right: 3px; width: 10px; height: 10px; background: #f7931a; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 5px; color: #000;">✓</div>
+                                RACE
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <!-- AI SECTION -->
+                <div class="section ai-section">
+                    <div style="display: flex; flex-direction: column; height: 100%;">
+                        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333;">
+                            <div style="width: 32px; height: 32px; background: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                <div style="font-size: 16px; font-weight: 600; color: #8B0000;">K</div>
+                            </div>
+                            <div style="font-size: 12px; color: #888;">Chief Protocol Officer</div>
+                        </div>
+                       
+                        <div class="network-status">
+                            <div class="network-dot"></div>
+                            <span style="color: #4CAF50; font-size: 10px;">connected to 1,248 human nodes</span>
+                        </div>
+                       
+                        <div style="flex: 1; padding: 16px; overflow-y: auto;" id="chatContainer">
+                            <div style="background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px;">
+                                My name is K, the Chief Protocol Officer for KILO. How can I assist?
+                            </div>
+                        </div>
+                       
+                        <div style="padding: 16px; border-top: 1px solid #333; display: flex; align-items: center; gap: 12px; background: #111;">
+                            <input type="text" placeholder="Message K..." style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 12px 16px; border-radius: 20px; font-size: 14px; outline: none;" onkeypress="handleMessageInput(event)" id="messageInput">
+                            <button onclick="sendMessage()" style="width: 40px; height: 40px; background: #8B0000; border: none; border-radius: 50%; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer;">→</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="showSection('home')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
+                        <path d="M12 3l8 7v11h-5v-6h-6v6H4V10l8-7z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="showSection('connect')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
+                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>Connect</span>
+                </div>
+                <div class="nav-item mint-nav" onclick="showSection('mint')" style="position: relative;">
+                    <div class="mint-nav-ring" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border: 2px solid #666; border-radius: 50%; opacity: 0.5;"></div>
+                    <svg width="28" height="32" viewBox="0 0 40 50" style="opacity: 0.8; position: relative; z-index: 1;">
+                        <path d="M8 12 L20 24 L8 36" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <path d="M20 24 L32 12" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <path d="M20 24 L20 40" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        <path d="M20 24 L32 36" stroke="#666" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    </svg>
+                </div>
+                <div class="nav-item" onclick="showSection('wallet')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
+                        <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle cx="16" cy="12" r="2" fill="currentColor"/>
+                    </svg>
+                    <span>Wallet</span>
+                </div>
+                <div class="nav-item ai-nav" onclick="showSection('ai')">
+                    <svg width="27.6" height="27.6" viewBox="0 0 24 24" style="opacity: 0.8;">
+                        <rect x="4" y="4" width="16" height="12" rx="3" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+                        <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
+                        <path d="M8 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M12 18v2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M10 20h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span>AI</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let isInProximity = false;
+        let isMinting = false;
+        let currentKilo = 99;
+        let pressTimer;
+        let hapticInterval;
+
+        // Define all global functions first
+        function showSection(sectionName) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+           
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+           
+            document.querySelector(`.${sectionName}-section`).classList.add('active');
+           
+            event.currentTarget.classList.add('active');
+           
+            if (sectionName === 'mint') {
+                setTimeout(() => {
+                    if (!isInProximity) {
+                        startProximityDemo();
+                    }
+                }, 500);
+            }
+            
+            if (sectionName === 'connect') {
+                generateMoments();
+            }
+        }
+
+        function generateMoments() {
+            const momentsGrid = document.getElementById('momentsGrid');
+            if (!momentsGrid || momentsGrid.children.length > 0) return; // Don't regenerate if already populated
+            
+            const gradients = [
+                'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
+                'linear-gradient(45deg, #A8E6CF, #DCEDC8)',
+                'linear-gradient(45deg, #FFB74D, #FFA726)',
+                'linear-gradient(45deg, #9C27B0, #673AB7)',
+                'linear-gradient(45deg, #26A69A, #00BCD4)',
+                'linear-gradient(45deg, #FF7043, #FF5722)',
+                'linear-gradient(45deg, #EC407A, #AB47BC)',
+                'linear-gradient(45deg, #5C6BC0, #42A5F5)',
+                'linear-gradient(45deg, #66BB6A, #9CCC65)'
+            ];
+            
+            const labels = ['PR', 'WIN', 'LIFT', 'RACE', 'TEAM', 'MINT', 'RUN', 'SWIM', 'BIKE'];
+            
+            // Generate 18 moment tiles
+            for (let i = 0; i < 18; i++) {
+                const momentDiv = document.createElement('div');
+                momentDiv.style.cssText = `
+                    aspect-ratio: 1;
+                    background: ${gradients[i % gradients.length]};
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 10px;
+                    color: ${i % 2 === 1 ? '#333' : 'white'};
+                    position: relative;
+                    cursor: pointer;
+                    transition: transform 0.2s ease;
+                `;
+                
+                // Add live indicator to some tiles
+                if (Math.random() > 0.6) {
+                    const liveIndicator = document.createElement('div');
+                    liveIndicator.className = 'live-indicator';
+                    momentDiv.appendChild(liveIndicator);
+                }
+                
+                const label = document.createElement('span');
+                label.textContent = labels[i % labels.length];
+                momentDiv.appendChild(label);
+                
+                // Add hover effect
+                momentDiv.addEventListener('mouseenter', () => {
+                    momentDiv.style.transform = 'scale(1.05)';
+                });
+                momentDiv.addEventListener('mouseleave', () => {
+                    momentDiv.style.transform = 'scale(1)';
+                });
+                
+                momentsGrid.appendChild(momentDiv);
+            }
+        }
+
+
+
+        function startProximityDemo() {
+            isInProximity = true;
+           
+            document.getElementById('mintButton').classList.add('proximity-active');
+            document.getElementById('verifyText').classList.add('visible');
+        }
+
+        function lightHaptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate(10);
+            }
+        }
+       
+        function strongHaptic() {
+            if (navigator.vibrate) {
+                navigator.vibrate([0, 50, 50, 100]);
+            }
+        }
+
+        function startMintDemo() {
+            if (!isInProximity) {
+                startProximityDemo();
+                setTimeout(startMintDemo, 1000);
+                return;
+            }
+           
+            if (isMinting) return;
+            isMinting = true;
+           
+            const mintButton = document.getElementById('mintButton');
+            const captureOverlay = document.getElementById('captureOverlay');
+            const verifyText = document.getElementById('verifyText');
+            const countdownText = document.getElementById('countdownText');
+            const verifiedText = document.getElementById('verifiedText');
+            const kiloEarned = document.getElementById('kiloEarned');
+           
+            lightHaptic();
+           
+            // Hide verify text immediately and show countdown
+            verifyText.classList.remove('visible');
+            verifyText.style.display = 'none';
+            
+            mintButton.classList.add('capturing');
+            captureOverlay.classList.add('active');
+            countdownText.classList.add('active');
+            countdownText.textContent = 'SCANNING IRIS... 3';
+           
+            let countdown = 3;
+            const timer = setInterval(() => {
+                countdown--;
+               
+                if (countdown > 0) {
+                    countdownText.textContent = `SCANNING IRIS... ${countdown}`;
+                    lightHaptic();
+                } else if (countdown === 0) {
+                    // Hide countdown and show verified
+                    countdownText.classList.remove('active');
+                    countdownText.textContent = '';
+                    
+                    verifiedText.style.display = 'block';
+                    kiloEarned.style.display = 'block';
+                    
+                    // Update balance (internal tracking)
+                    currentKilo += 3;
+                    
+                    strongHaptic();
+                    
+                    setTimeout(() => {
+                        captureOverlay.classList.remove('active');
+                        
+                        setTimeout(() => {
+                            mintButton.classList.remove('capturing');
+                            verifiedText.style.display = 'none';
+                            kiloEarned.style.display = 'none';
+                            
+                            // Show verify text again after a delay
+                            setTimeout(() => {
+                                verifyText.style.display = 'block';
+                                setTimeout(() => {
+                                    verifyText.classList.add('visible');
+                                }, 50);
+                                isMinting = false;
+                            }, 500);
+                        }, 1500);
+                    }, 1500);
+                    
+                    clearInterval(timer);
+                }
+            }, 1000);
+        }
+
+        function handleMessageInput(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            if (!input || !input.value.trim()) return;
+            
+            const userMessage = input.value.trim();
+            const chatContainer = document.getElementById('chatContainer');
+            
+            // Add user message to chat
+            const userMessageEl = document.createElement('div');
+            userMessageEl.style.cssText = 'background: #222; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; margin-left: auto; max-width: 80%; text-align: right;';
+            userMessageEl.textContent = userMessage;
+            chatContainer.appendChild(userMessageEl);
+            
+            // Clear input
+            input.value = '';
+            
+            // Add typing indicator
+            const typingEl = document.createElement('div');
+            typingEl.style.cssText = 'background: #333; padding:
