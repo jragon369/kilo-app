@@ -239,6 +239,26 @@
        
         .mint-container {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .mint-container::-webkit-scrollbar {
+            display: none;
+        }
+       
+        /* FIXED: Better scroll container and screen setup */
+        .mint-container {
+            display: flex;
             align-items: center;
             justify-content: flex-start;
             height: 100%;
@@ -280,7 +300,7 @@
             justify-content: center;
             position: relative;
             flex-shrink: 0;
-            margin: 0 60px;
+            margin: 0 60px; /* Increased from 20px to 60px for more spacing */
         }
         
         .mint-screen:first-of-type {
@@ -349,6 +369,51 @@
                     inset 0 0 30px rgba(139, 0, 0, 0.2);
                 transform: scale(1.05);
             }
+        }
+       
+        .mint-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+       
+        .mint-text {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0.8;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+       
+        .capture-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 60px;
+            border: 2px solid rgba(139, 0, 0, 0.6);
+            border-radius: 50px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+       
+        .capture-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+       
+        .capture-overlay::before {
+            content: '';
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(139, 0, 0, 0.8);
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 30%, rgba(139, 0, 0, 0.1) 70%);
         }
 
         /* Live activity indicator */
@@ -425,6 +490,11 @@
             transform: translateY(-50%);
             color: #666;
         }
+
+        /* Add CSS to hide scrollbars for the moments grid */
+        .connect-section > div:last-child::-webkit-scrollbar {
+            display: none;
+        }
         
         /* Network status indicator */
         .network-status {
@@ -491,7 +561,7 @@
 
         function generateMoments() {
             const momentsGrid = document.getElementById('momentsGrid');
-            if (!momentsGrid || momentsGrid.children.length > 0) return;
+            if (!momentsGrid || momentsGrid.children.length > 0) return; // Don't regenerate if already populated
             
             const gradients = [
                 'linear-gradient(45deg, #FF6B6B, #4ECDC4)',
@@ -507,6 +577,7 @@
             
             const labels = ['PR', 'WIN', 'LIFT', 'RACE', 'TEAM', 'MINT', 'RUN', 'SWIM', 'BIKE'];
             
+            // Generate 18 moment tiles
             for (let i = 0; i < 18; i++) {
                 const momentDiv = document.createElement('div');
                 momentDiv.style.cssText = `
@@ -522,6 +593,7 @@
                     transition: transform 0.2s ease;
                 `;
                 
+                // Add live indicator to some tiles
                 if (Math.random() > 0.6) {
                     const liveIndicator = document.createElement('div');
                     liveIndicator.className = 'live-indicator';
@@ -532,6 +604,7 @@
                 label.textContent = labels[i % labels.length];
                 momentDiv.appendChild(label);
                 
+                // Add hover effect
                 momentDiv.addEventListener('mouseenter', () => {
                     momentDiv.style.transform = 'scale(1.05)';
                 });
@@ -545,6 +618,7 @@
 
         function startProximityDemo() {
             isInProximity = true;
+           
             document.getElementById('mintButton').classList.add('proximity-active');
             document.getElementById('verifyText').classList.add('visible');
         }
@@ -579,6 +653,7 @@
            
             lightHaptic();
            
+            // Hide verify text immediately and show countdown
             verifyText.classList.remove('visible');
             verifyText.style.display = 'none';
             
@@ -594,14 +669,17 @@
                     countdownText.textContent = `${countdown}`;
                     lightHaptic();
                 } else if (countdown === 0) {
+                    // Hide countdown and show verified
                     countdownText.classList.remove('active');
                     countdownText.textContent = '';
                     
                     verifiedText.style.display = 'block';
                     kiloEarned.style.display = 'block';
                     
+                    // Turn ring white when verified
                     mintButton.classList.add('verified');
                     
+                    // Update balance (internal tracking)
                     currentKilo += 3;
                     
                     strongHaptic();
@@ -612,6 +690,7 @@
                         verifiedText.style.display = 'none';
                         kiloEarned.style.display = 'none';
                         
+                        // Show verify text again after a delay
                         setTimeout(() => {
                             verifyText.style.display = 'block';
                             setTimeout(() => {
@@ -632,12 +711,6 @@
             }
         }
 
-        function quickMessage(message) {
-            const input = document.getElementById('messageInput');
-            input.value = message;
-            sendMessage();
-        }
-
         async function sendMessage() {
             const input = document.getElementById('messageInput');
             if (!input || !input.value.trim()) return;
@@ -645,33 +718,84 @@
             const userMessage = input.value.trim();
             const chatContainer = document.getElementById('chatContainer');
             
+            // Add user message to chat
             const userMessageEl = document.createElement('div');
             userMessageEl.style.cssText = 'background: #222; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; margin-left: auto; max-width: 80%; text-align: right;';
             userMessageEl.textContent = userMessage;
             chatContainer.appendChild(userMessageEl);
             
+            // Clear input
             input.value = '';
             
-            const kResponseEl = document.createElement('div');
-            kResponseEl.style.cssText = 'background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.4;';
+            // Add typing indicator
+            const typingEl = document.createElement('div');
+            typingEl.style.cssText = 'background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; color: #888;';
+            typingEl.textContent = 'K is thinking...';
+            chatContainer.appendChild(typingEl);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
             
-            let response = '';
-            const lowerMessage = userMessage.toLowerCase();
-            
-            if (lowerMessage.includes('proof of human') || lowerMessage.includes('poh')) {
-                response = "Proof of Human uses iris scanning to create an unforgeable biometric signature. Your unique entropy is hashed on-device and minted as a Taproot Asset on Bitcoin. This ensures only real humans can participate in the network, creating Sybil resistance at the protocol level.";
-            } else if (lowerMessage.includes('earning') || lowerMessage.includes('potential')) {
-                response = "Based on current network metrics: Daily winners earn 50-200 KILO per competition. Active athletes average 750 KILO monthly. Top performers can earn 5,000+ KILO through tournaments. As the network grows, rewards scale with participation. Your Avatar #1.1.001 positions you as an early adopter with maximum earning potential.";
-            } else if (lowerMessage.includes('virtual collective')) {
-                response = "Virtual collectives like Basketball Global or Football Global don't require physical infrastructure. Every court, field, or gym worldwide becomes a node. Your smartphone acts as a motion oracle, verifying your performance through AI. You compete globally but earn locally, with rewards settled on Bitcoin.";
-            } else if (lowerMessage.includes('bitcoin')) {
-                response = "Bitcoin provides the immutable foundation for human sovereignty. Your identity, achievements, and value are anchored to the most secure network ever created. No government or corporation can revoke your Proof of Human. The Lightning Network enables instant micropayments for every verified action.";
-            } else {
-                response = "I'm continuously learning from verified human activity across the network. Each collective trains its own K instance, and we sync through consensus. Your question helps me evolve. What specific aspect of KILO would you like to explore?";
+            try {
+                console.log('Sending to K:', userMessage);
+                
+                // Call your working proxy with the correct format
+                const response = await fetch('https://kilo-k-proxy.vercel.app/api/k', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: userMessage
+                    })
+                });
+                
+                console.log('Response status:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('K RESPONSE:', data);
+                    
+                    // Remove typing indicator
+                    chatContainer.removeChild(typingEl);
+                    
+                    // Create K's response element with proper formatting for long messages
+                    const kResponseEl = document.createElement('div');
+                    kResponseEl.style.cssText = 'background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.4; white-space: pre-wrap; word-wrap: break-word; max-width: 100%; overflow-wrap: break-word;';
+                    
+                    // Extract and clean the full text from response
+                    let responseText = data.text || data.message || 'K seems to be thinking...';
+                    
+                    // Clean up any JSON artifacts or formatting issues
+                    responseText = responseText.replace(/\\n/g, '\n').replace(/\\"/g, '"');
+                    
+                    kResponseEl.textContent = responseText;
+                    chatContainer.appendChild(kResponseEl);
+                    
+                } else {
+                    console.log('K API Error:', response.status, response.statusText);
+                    const errorText = await response.text();
+                    console.log('Error details:', errorText);
+                    
+                    // Remove typing indicator and show error
+                    chatContainer.removeChild(typingEl);
+                    const errorEl = document.createElement('div');
+                    errorEl.style.cssText = 'background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; color: #ff6b6b;';
+                    errorEl.textContent = `K Error: ${response.status} - Check your API credentials`;
+                    chatContainer.appendChild(errorEl);
+                }
+                
+            } catch (error) {
+                console.error('K ERROR:', error);
+                // Remove typing indicator
+                if (chatContainer.contains(typingEl)) {
+                    chatContainer.removeChild(typingEl);
+                }
+                
+                // Show error
+                const errorEl = document.createElement('div');
+                errorEl.style.cssText = 'background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px; color: #ff6b6b;';
+                errorEl.textContent = 'Connection error: ' + error.message;
+                chatContainer.appendChild(errorEl);
             }
-            
-            kResponseEl.textContent = response;
-            chatContainer.appendChild(kResponseEl);
             
             chatContainer.scrollTop = chatContainer.scrollHeight;
         }
@@ -688,6 +812,7 @@
                 convertBtn.style.background = '#666';
                 convertBtn.style.color = '#fff';
                 
+                // Update available balance
                 document.getElementById('availableKilo').textContent = currentKilo.toLocaleString();
             } else {
                 balancesSection.style.display = 'block';
@@ -700,17 +825,19 @@
         
         function updateConversion() {
             const kiloInputElement = document.getElementById('kiloInput');
-            if (!kiloInputElement) return;
+            if (!kiloInputElement) return; // Exit if element doesn't exist
             
             const kiloInput = parseFloat(kiloInputElement.value) || 0;
-            const conversionRate = 0.00001;
-            const networkFeePercent = 0.03;
+            const conversionRate = 0.00001; // 1 KILO = 0.00001 BTC
+            const networkFeePercent = 0.03; // 3% fee
             
+            // Calculate fee and final amounts
             const feeAmount = Math.round(kiloInput * networkFeePercent);
             const kiloAfterFee = kiloInput - feeAmount;
             const btcAmount = kiloInput * conversionRate;
             const btcAfterFee = kiloAfterFee * conversionRate;
             
+            // Update display if elements exist
             const btcOutput = document.getElementById('btcOutput');
             const networkFee = document.getElementById('networkFee');
             const finalBTC = document.getElementById('finalBTC');
@@ -722,7 +849,7 @@
         
         function executeConversion() {
             const kiloInput = parseFloat(document.getElementById('kiloInput').value) || 0;
-            const networkFeePercent = 0.03;
+            const networkFeePercent = 0.03; // 3% fee
             
             if (kiloInput > currentKilo) {
                 alert('Insufficient KILO balance');
@@ -734,25 +861,32 @@
                 return;
             }
             
+            // Calculate fee
             const feeAmount = Math.round(kiloInput * networkFeePercent);
             const totalDeduction = kiloInput;
             
+            // Update balance
             currentKilo -= totalDeduction;
             document.getElementById('kiloBalance').textContent = currentKilo.toLocaleString();
             
+            // Show success message
             alert(`Successfully converted ${kiloInput} KILO to BTC!\n\nNetwork fee: ${feeAmount} KILO\nNew balance: ${currentKilo} KILO`);
             
+            // Reset and close convert interface
             toggleConvertInterface();
             document.getElementById('kiloInput').value = '1000';
             updateConversion();
         }
 
+        // Set up event listeners after DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
             const mintButton = document.getElementById('mintButton');
             if (mintButton) {
+                // Remove any existing listeners first
                 const newMintButton = mintButton.cloneNode(true);
                 mintButton.parentNode.replaceChild(newMintButton, mintButton);
                 
+                // Add fresh event listeners
                 newMintButton.addEventListener('mousedown', (e) => {
                     if (isInProximity && !isMinting) {
                         lightHaptic();
@@ -798,6 +932,7 @@
                     clearInterval(hapticInterval);
                 });
                 
+                // Add click handler for desktop
                 newMintButton.addEventListener('click', (e) => {
                     if (isInProximity && !isMinting) {
                         startMintDemo();
@@ -805,14 +940,17 @@
                 });
             }
             
+            // Start proximity demo after a delay
             setTimeout(() => {
                 startProximityDemo();
+                // Also ensure we start at Las Vegas on initial load
                 const mintContainer = document.getElementById('mintContainer');
                 if (mintContainer) {
                     mintContainer.scrollLeft = 0;
                 }
             }, 1000);
             
+            // Initialize conversion display
             if (typeof updateConversion === 'function') {
                 updateConversion();
             }
@@ -832,8 +970,10 @@
                 <!-- HOME SECTION -->
                 <div class="section home-section active">
                     <div style="padding: 20px; position: relative;">
+                        <!-- Gear Icon - Top Right Corner -->
                         <div style="position: absolute; top: 20px; right: 20px; color: #666; font-size: 18px; cursor: pointer;">⚙️</div>
                        
+                        <!-- Profile Picture -->
                         <div style="width: 80px; height: 80px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
                             <svg width="40" height="50" viewBox="0 0 40 50">
                                 <path d="M5 8 L20 23 L5 38" stroke="#6B7BA8" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -843,6 +983,7 @@
                             </svg>
                         </div>
                        
+                        <!-- Kilo Protocol with checkmark -->
                         <div style="display: flex; align-items: center; gap: 4px; margin-bottom: 4px;">
                             <span style="font-size: 16.1px; color: #888;">Kilo Protocol</span>
                             <svg width="16" height="16" viewBox="0 0 24 24" style="fill: #8B0000;">
@@ -851,10 +992,13 @@
                             </svg>
                         </div>
                        
+                        <!-- Username -->
                         <div style="font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px;">@kilo</div>
                        
+                        <!-- Location -->
                         <div style="font-size: 14px; color: #888; margin-bottom: 16px;">Las Vegas, NV</div>
                        
+                        <!-- Stats -->
                         <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                             <div style="text-align: left;">
                                 <div style="font-size: 15.3px; font-weight: bold; color: #888;">1.1.001</div>
@@ -870,8 +1014,10 @@
                             </div>
                         </div>
                        
+                        <!-- Top Border Line -->
                         <div style="border-top: 1px solid #333; margin-bottom: 20px;"></div>
                        
+                        <!-- Horizontal Scrolling Connections -->
                         <div class="connections-scroll-container">
                             <div class="connections-scroll">
                                 <div class="connection-item">
@@ -896,6 +1042,7 @@
                         </div>
                     </div>
                    
+                    <!-- Content Grid -->
                     <div style="border-top: 1px solid #333;">
                         <div style="display: flex; justify-content: center; padding: 12px 0; border-bottom: 1px solid #333;">
                             <div style="padding: 8px 16px; border-bottom: 2px solid #fff; color: #fff; font-size: 14px;">⊞</div>
@@ -922,6 +1069,7 @@
                
                 <!-- CONNECT SECTION -->
                 <div class="section connect-section">
+                    <!-- Real-time Mints - Horizontally Scrollable -->
                     <div class="connections-scroll-container" style="margin-bottom: 10px; padding: 8px 0;">
                         <div class="connections-scroll" style="padding: 8px 20px;">
                             <div class="connection-item">
@@ -957,16 +1105,19 @@
                    
                     <div style="padding: 2px; height: calc(100% - 155px); overflow-y: auto; padding-bottom: 20px; scrollbar-width: none; -ms-overflow-style: none;">
                         <div id="momentsGrid" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px;">
+                            <!-- Moments will be generated here by JavaScript -->
                         </div>
                     </div>
                 </div>
                
-                <!-- MINT SECTION -->
+                <!-- MINT SECTION - ALL 9 SCREENS INCLUDED -->
                 <div class="section mint-section">
                     <div class="mint-container" id="mintContainer">
                         <div class="mint-screens">
+                            <!-- Spacer for centering first item -->
                             <div class="mint-spacer"></div>
                             
+                            <!-- 1. KILO CLUB LAS VEGAS (Interactive) -->
                             <div class="mint-screen">
                                 <div class="mint-status-text">
                                     <div class="verify-text" id="verifyText">HOLD TO VERIFY</div>
@@ -984,6 +1135,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 2. KILO CLUB NYC -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -995,6 +1147,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 3. KILO CLUB HONOLULU -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1006,6 +1159,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 4. BASKETBALL GLOBAL -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1017,6 +1171,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 5. FOOTBALL GLOBAL -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1028,6 +1183,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 6. FITNESS GLOBAL -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1039,6 +1195,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 7. ARTISTS TOKYO -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1050,6 +1207,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 8. MUSICIANS VIENNA -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1061,6 +1219,7 @@
                                 </div>
                             </div>
                             
+                            <!-- 9. BALLROOM BRAZIL -->
                             <div class="mint-screen">
                                 <div class="mint-button-container">
                                     <div class="mint-button" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #8B0000;">
@@ -1072,6 +1231,7 @@
                                 </div>
                             </div>
                             
+                            <!-- Spacer for centering last item -->
                             <div class="mint-spacer"></div>
                         </div>
                     </div>
@@ -1158,227 +1318,182 @@
                             </div>
 
                             <!-- Convert Button -->
-                            <button onclick="toggleConvertInterface()" id="convertBtn" style="width: auto; padding: 12px 24px; background: #2a2a2a; color: #8B0000; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; align-self: center; font-weight: 600;">Convert to BTC</button>
+                            <button onclick="toggleConvertInterface()" id="convertBtn" style="width: auto; padding: 12px 24px; background: #8B0000; color: #fff; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; align-self: center;">Convert to BTC</button>
                         </div>
 
                         <!-- Scrollable Moments Section -->
                         <div style="flex: 1; overflow-y: auto; padding: 0 20px 20px 20px; scrollbar-width: none; -ms-overflow-style: none;">
-                            <div style="margin-top: 0;" id="momentsContainer">
-                                <!-- Moments will be generated dynamically -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <script>
-                        // Initialize moments data
-                        let moments = [
-                            { type: 'PR', gradient: 'linear-gradient(135deg, #FF6B6B, #4ECDC4)', date: '8/1/25', witnesses: 31, likes: 247, kilo: 247 },
-                            { type: 'WIN', gradient: 'linear-gradient(135deg, #A8E6CF, #DCEDC8)', date: '7/29/25', witnesses: 18, likes: 420, kilo: 420 },
-                            { type: 'LIFT', gradient: 'linear-gradient(135deg, #FFB74D, #FFA726)', date: '7/25/25', witnesses: 15, likes: 89, kilo: 89 },
-                            { type: 'RACE', gradient: 'linear-gradient(135deg, #9C27B0, #673AB7)', date: '7/18/25', witnesses: 21, likes: 156, kilo: 156 },
-                            { type: 'TEAM', gradient: 'linear-gradient(135deg, #26A69A, #00BCD4)', date: '7/11/25', witnesses: 9, likes: 43, kilo: 43 },
-                            { type: 'SWIM', gradient: 'linear-gradient(135deg, #FF7043, #FF5722)', date: '7/8/25', witnesses: 12, likes: 67, kilo: 67 },
-                            { type: 'RUN', gradient: 'linear-gradient(135deg, #EC407A, #AB47BC)', date: '7/5/25', witnesses: 7, likes: 234, kilo: 234 },
-                            { type: 'BIKE', gradient: 'linear-gradient(135deg, #5C6BC0, #42A5F5)', date: '7/2/25', witnesses: 25, likes: 512, kilo: 512 },
-                            { type: 'MINT', gradient: 'linear-gradient(135deg, #66BB6A, #9CCC65)', date: '6/30/25', witnesses: 3, likes: 28, kilo: 28 },
-                            { type: 'COMPETE', gradient: 'linear-gradient(135deg, #FFA726, #FF6B6B)', date: '6/28/25', witnesses: 41, likes: 789, kilo: 789 }
-                        ];
-                        
-                        function renderMoments() {
-                            const container = document.getElementById('momentsContainer');
-                            if (!container) return;
-                            
-                            container.innerHTML = '';
-                            
-                            moments.forEach((moment, index) => {
-                                const usdValue = (moment.kilo * 1.23).toFixed(2);
-                                const momentDiv = document.createElement('div');
-                                momentDiv.style.cssText = 'background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;';
-                                momentDiv.onmouseenter = function() { 
-                                    this.style.borderColor='#444'; 
-                                    this.style.transform='translateY(-2px)'; 
-                                    this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';
-                                };
-                                momentDiv.onmouseleave = function() { 
-                                    this.style.borderColor='#333'; 
-                                    this.style.transform='translateY(0)'; 
-                                    this.style.boxShadow='none';
-                                };
-                                
-                                momentDiv.innerHTML = `
+                            <div style="margin-top: 0;">
+                                <!-- PR Moment -->
+                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
                                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; background: ${moment.gradient};"></div>
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #FF6B6B, #4ECDC4);"></div>
                                         <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">${moment.type}</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">PR</div>
                                         </div>
                                         <div style="text-align: right;">
-                                            <div id="kilo-${index}" style="font-size: 13px; font-weight: bold; color: #8B0000; transition: all 0.3s ease;">${moment.kilo.toLocaleString()} KILO</div>
-                                            <div id="usd-${index}" style="font-size: 11px; color: #666; margin-top: 2px;">${parseFloat(usdValue).toFixed(2)} USD</div>
+                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">8,247 KILO</div>
+                                            <div style="font-size: 11px; color: #666; margin-top: 2px;">$10,144 USD</div>
                                         </div>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
                                         <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">${moment.date}</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">8/1/25</div>
                                             <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
                                         </div>
                                         <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">${moment.witnesses}</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">312</div>
                                             <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
                                         </div>
                                         <div style="text-align: center; flex: 1;">
-                                            <div id="likes-${index}" style="font-size: 12px; font-weight: 600; color: #fff; transition: all 0.5s ease;">${moment.likes}</div>
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">8.2K</div>
                                             <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
                                         </div>
                                     </div>
-                                `;
-                                
-                                container.appendChild(momentDiv);
-                            });
-                        }
-                        
-                        // Start the ticking animation
-                        function startMomentTicking() {
-                            let tickCounter = 0;
-                            
-                            setInterval(() => {
-                                // Determine which moment to update based on the pattern
-                                let momentIndex;
-                                if (tickCounter % 2 === 0) {
-                                    // Even tick: update odd-indexed moments (1st, 3rd, 5th, etc.)
-                                    const oddIndices = [0, 2, 4, 6, 8];
-                                    momentIndex = oddIndices[Math.floor(Math.random() * oddIndices.length)];
-                                } else {
-                                    // Odd tick: update even-indexed moments (2nd, 4th, 6th, etc.)
-                                    const evenIndices = [1, 3, 5, 7, 9];
-                                    momentIndex = evenIndices[Math.floor(Math.random() * evenIndices.length)];
-                                }
-                                
-                                // Only update if likes haven't reached 888
-                                if (moments[momentIndex].likes < 888) {
-                                    // Increment likes
-                                    moments[momentIndex].likes++;
-                                    moments[momentIndex].kilo = moments[momentIndex].likes; // 1 like = 1 KILO
-                                    
-                                    // Update DOM
-                                    const likesEl = document.getElementById(`likes-${momentIndex}`);
-                                    const kiloEl = document.getElementById(`kilo-${momentIndex}`);
-                                    const usdEl = document.getElementById(`usd-${momentIndex}`);
-                                    
-                                    if (likesEl && kiloEl && usdEl) {
-                                        // Flash red and update likes
-                                        likesEl.style.color = '#8B0000';
-                                        likesEl.style.transform = 'scale(1.2)';
-                                        likesEl.textContent = moments[momentIndex].likes;
-                                        
-                                        // Update KILO
-                                        kiloEl.textContent = `${moments[momentIndex].kilo.toLocaleString()} KILO`;
-                                        
-                                        // Update USD
-                                        const usdValue = (moments[momentIndex].kilo * 1.23).toFixed(2);
-                                        usdEl.textContent = `${parseFloat(usdValue).toFixed(2)} USD`;
-                                        
-                                        // Reset color after animation
-                                        setTimeout(() => {
-                                            likesEl.style.color = '#fff';
-                                            likesEl.style.transform = 'scale(1)';
-                                        }, 500);
-                                    }
-                                }
-                                
-                                tickCounter++;
-                            }, 3000); // Every 3 seconds
-                        }
-                        
-                        // Initialize moments when wallet section is shown
-                        document.addEventListener('DOMContentLoaded', function() {
-                            // Check if we're in the wallet section and render moments
-                            const originalShowSection = window.showSection;
-                            window.showSection = function(sectionName) {
-                                originalShowSection.call(this, sectionName);
-                                if (sectionName === 'wallet') {
-                                    renderMoments();
-                                    // Start ticking after a short delay
-                                    setTimeout(startMomentTicking, 1000);
-                                }
-                            };
-                        });
-                    </script>
+                                </div>
+
+                                <!-- WIN Moment -->
+                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #A8E6CF, #DCEDC8);"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">WIN</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">5,420 KILO</div>
+                                            <div style="font-size: 11px; color: #666; margin-top: 2px;">$6,667 USD</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">7/29/25</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">189</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">5.4K</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- LIFT Moment -->
+                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #FFB74D, #FFA726);"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">LIFT</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">3,890 KILO</div>
+                                            <div style="font-size: 11px; color: #666; margin-top: 2px;">$4,785 USD</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">7/25/25</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">156</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">3.9K</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RACE Moment -->
+                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #9C27B0, #673AB7);"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">RACE</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">4,750 KILO</div>
+                                            <div style="font-size: 11px; color: #666; margin-top: 2px;">$5,843 USD</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">7/18/25</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">201</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">4.8K</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- TEAM Moment -->
+                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; flex-shrink: 0; background: linear-gradient(135deg, #26A69A, #00BCD4);"></div>
+                                        <div style="flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">TEAM</div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">2,443 KILO</div>
+                                            <div style="font-size: 11px; color: #666; margin-top: 2px;">$3,005 USD</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">7/11/25</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">98</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
+                                        </div>
+                                        <div style="text-align: center; flex: 1;">
+                                            <div style="font-size: 14px; font-weight: 600; color: #fff;">2.4K</div>
+                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- AI SECTION -->
                 <div class="section ai-section">
-                    <div style="display: flex; flex-direction: column; height: 100%; position: relative; background: #000;">
-                        <!-- Animated particle background -->
-                        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; opacity: 0.4;">
-                            <div style="position: absolute; width: 200px; height: 200px; background: radial-gradient(circle, rgba(139,0,0,0.3) 0%, transparent 70%); top: 20%; left: 10%; animation: float 20s infinite ease-in-out;"></div>
-                            <div style="position: absolute; width: 150px; height: 150px; background: radial-gradient(circle, rgba(139,0,0,0.2) 0%, transparent 70%); top: 60%; right: 20%; animation: float 15s infinite ease-in-out reverse;"></div>
-                            <div style="position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%); top: 40%; left: 50%; animation: pulse 4s infinite ease-in-out;"></div>
-                        </div>
-                        
-                        <!-- Glassmorphic header -->
-                        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid rgba(255,255,255,0.1); background: linear-gradient(180deg, rgba(26,26,26,0.8) 0%, rgba(10,10,10,0.4) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: relative; z-index: 2;">
-                            <div style="width: 34px; height: 34px; background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 30%, #1a1a1a 60%, #0a0a0a 100%); border: 2px solid rgba(139,0,0,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; box-shadow: 0 12px 40px rgba(139,0,0,0.4), 0 4px 12px rgba(0,0,0,0.8), inset -4px -4px 8px rgba(255,255,255,0.1), inset 4px 4px 8px rgba(0,0,0,0.8), 0 0 0 4px rgba(139,0,0,0.1); position: relative; transform: translateZ(0); transform-style: preserve-3d;">
-                                <div style="font-size: 15px; font-weight: 600; color: #8B0000;">K</div>
-                                <!-- Orbiting dots - 3 equidistant ON the border -->
-                                <div style="position: absolute; width: 3.4px; height: 3.4px; background: #8B0000; border-radius: 50%; animation: orbitOnBorder 3.45s linear infinite; box-shadow: 0 0 10px rgba(139,0,0,0.8);"></div>
-                                <div style="position: absolute; width: 3.4px; height: 3.4px; background: #8B0000; border-radius: 50%; animation: orbitOnBorder 3.45s linear infinite; animation-delay: 1.15s; box-shadow: 0 0 10px rgba(139,0,0,0.8);"></div>
-                                <div style="position: absolute; width: 3.4px; height: 3.4px; background: #8B0000; border-radius: 50%; animation: orbitOnBorder 3.45s linear infinite; animation-delay: 2.3s; box-shadow: 0 0 10px rgba(139,0,0,0.8);"></div>
+                    <div style="display: flex; flex-direction: column; height: 100%;">
+                        <div style="text-align: center; padding: 20px 0; border-bottom: 1px solid #333;">
+                            <div style="width: 32px; height: 32px; background: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 4px;">
+                                <div style="font-size: 16px; font-weight: 600; color: #8B0000;">K</div>
                             </div>
-                            <div style="font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 2px; font-weight: 400;">Chief Protocol Officer</div>
+                            <div style="font-size: 12px; color: #888;">Chief Protocol Officer</div>
                         </div>
                        
-                        <!-- Chat container with glass effect -->
-                        <div style="flex: 1; padding: 20px; padding-top: 30px; overflow-y: auto; position: relative; z-index: 1;" id="chatContainer">
-                            <div style="background: linear-gradient(135deg, rgba(51,51,51,0.6) 0%, rgba(51,51,51,0.3) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); padding: 14px 18px; border-radius: 20px; margin-bottom: 12px; font-size: 14px; line-height: 1.5; box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05); position: relative; overflow: hidden;">
-                                <!-- Shimmer effect -->
-                                <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.05) 50%, transparent 70%); animation: shimmer 3s infinite;"></div>
-                                <span style="position: relative; color: rgba(255,255,255,0.9);">My name is K, the Chief Protocol Officer for KILO. How can I assist?</span>
+                        <div class="network-status">
+                            <div class="network-dot"></div>
+                            <span style="color: #4CAF50; font-size: 10px;">connected to 1,248 human nodes</span>
+                        </div>
+                       
+                        <div style="flex: 1; padding: 16px; overflow-y: auto;" id="chatContainer">
+                            <div style="background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px;">
+                                My name is K, the Chief Protocol Officer for KILO. How can I assist?
                             </div>
                         </div>
                        
-                        <!-- Input area with premium glass effect -->
-                        <div style="padding: 20px; border-top: 1px solid rgba(255,255,255,0.1); background: linear-gradient(180deg, rgba(17,17,17,0.9) 0%, rgba(17,17,17,0.95) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); display: flex; align-items: center; gap: 12px; position: relative; z-index: 2;">
-                            <input type="text" placeholder="Message K..." style="flex: 1; background: rgba(34,34,34,0.5); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px 20px; border-radius: 24px; font-size: 14px; outline: none; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 2px 8px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05); transition: all 0.3s ease;" 
-                                   onfocus="this.style.border='1px solid rgba(139,0,0,0.5)'; this.style.boxShadow='inset 0 2px 8px rgba(0,0,0,0.3), 0 0 20px rgba(139,0,0,0.2), 0 1px 0 rgba(255,255,255,0.05)';" 
-                                   onblur="this.style.border='1px solid rgba(255,255,255,0.1)'; this.style.boxShadow='inset 0 2px 8px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05)';" 
-                                   onkeypress="handleMessageInput(event)" id="messageInput">
-                            <button onclick="sendMessage()" style="width: 44px; height: 44px; background: linear-gradient(135deg, rgba(139,0,0,0.8) 0%, rgba(139,0,0,0.6) 100%); border: 1px solid rgba(139,0,0,0.3); border-radius: 50%; color: #fff; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1); transition: all 0.3s ease; position: relative; overflow: hidden;"
-                                    onmouseenter="this.style.transform='scale(1.1)'; this.style.boxShadow='0 6px 30px rgba(139,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)';"
-                                    onmouseleave="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 20px rgba(139,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1)';">
-                                <span style="position: relative; z-index: 1;">→</span>
-                            </button>
+                        <div style="padding: 16px; border-top: 1px solid #333; display: flex; align-items: center; gap: 12px; background: #111;">
+                            <input type="text" placeholder="Message K..." style="flex: 1; background: #222; border: 1px solid #444; color: #fff; padding: 12px 16px; border-radius: 20px; font-size: 14px; outline: none;" onkeypress="handleMessageInput(event)" id="messageInput">
+                            <button onclick="sendMessage()" style="width: 40px; height: 40px; background: #8B0000; border: none; border-radius: 50%; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; cursor: pointer;">→</button>
                         </div>
                     </div>
-                    
-                    <style>
-                        @keyframes float {
-                            0%, 100% { transform: translateY(0) translateX(0); }
-                            25% { transform: translateY(-20px) translateX(10px); }
-                            50% { transform: translateY(10px) translateX(-10px); }
-                            75% { transform: translateY(-10px) translateX(20px); }
-                        }
-                        
-                        @keyframes orbitOnBorder {
-                            0% { transform: rotate(0deg) translateX(17px) rotate(0deg); }
-                            100% { transform: rotate(360deg) translateX(17px) rotate(-360deg); }
-                        }
-                        
-                        @keyframes shimmer {
-                            0% { transform: translateX(-100%); }
-                            100% { transform: translateX(100%); }
-                        }
-                        
-                        @keyframes pulse {
-                            0%, 100% { opacity: 0.3; transform: scale(1); }
-                            50% { opacity: 0.6; transform: scale(1.1); }
-                        }
-                        
-                        @keyframes likeFlash {
-                            0% { color: #fff; }
-                            50% { color: #8B0000; transform: scale(1.2); }
-                            100% { color: #fff; transform: scale(1); }
-                        }
-                    </style>
                 </div>
             </div>
            
