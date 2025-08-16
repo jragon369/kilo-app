@@ -547,8 +547,8 @@
         let isInProximity = false;
         let isMinting = false;
         let baseKilo = 99;
-        let momentsKilo = 247 + 420 + 89 + 156 + 43 + 312 + 78 + 201 + 167 + 95 + 134 + 223; // 2165
-        let currentKilo = baseKilo + momentsKilo; // 2264
+        let momentsKilo = 420 + 89 + 156 + 43 + 312 + 78 + 201 + 167 + 95 + 134 + 223; // 1918 (excluding PR which is dynamic)
+        let currentKilo = baseKilo + momentsKilo + 247; // 2264 (including initial PR amount)
         let pressTimer;
         let hapticInterval;
 
@@ -1004,6 +1004,99 @@
             if (typeof updateConversion === 'function') {
                 updateConversion();
             }
+            
+            // Start PR likes counter - tick up every 3 seconds
+            let prLikes = 247;
+            let prKilo = 247; // Track KILO amount for PR card
+            setInterval(() => {
+                const prLikesElement = document.getElementById('prLikesCount');
+                const prKiloElement = document.getElementById('prKiloAmount');
+                const prKiloUsdElement = document.getElementById('prKiloUsd');
+                const kiloBalanceElement = document.getElementById('kiloBalance');
+                const kiloBalanceUsdElement = document.getElementById('kiloBalanceUsd');
+                
+                if (prLikesElement) {
+                    prLikes++;
+                    prKilo++; // KILO increases with likes
+                    
+                    // Update likes counter
+                    prLikesElement.textContent = prLikes.toLocaleString();
+                    
+                    // Update KILO amount on PR card
+                    if (prKiloElement) {
+                        prKiloElement.textContent = `${prKilo} KILO`;
+                    }
+                    
+                    // Update USD value on PR card
+                    if (prKiloUsdElement) {
+                        const usdValue = (prKilo * 1.23).toFixed(2); // $1.23 per KILO
+                        prKiloUsdElement.textContent = `${usdValue} USD`;
+                    }
+                    
+                    // Update total balance (99 base + all moment KILO including updated PR)
+                    const otherMomentsKilo = 420 + 89 + 156 + 43 + 312 + 78 + 201 + 167 + 95 + 134 + 223; // 1918
+                    currentKilo = 99 + prKilo + otherMomentsKilo;
+                    
+                    // Update balance display
+                    if (kiloBalanceElement) {
+                        kiloBalanceElement.textContent = currentKilo.toLocaleString();
+                    }
+                    
+                    // Update main balance USD value
+                    if (kiloBalanceUsdElement) {
+                        const totalUsdValue = (currentKilo * 1.23).toFixed(0);
+                        kiloBalanceUsdElement.textContent = `${parseInt(totalUsdValue).toLocaleString()} USD`;
+                    }
+                    
+                    // Update available balance in convert interface if visible
+                    const availableKiloElement = document.getElementById('availableKilo');
+                    if (availableKiloElement) {
+                        availableKiloElement.textContent = currentKilo.toLocaleString();
+                    }
+                    
+                    // Add visual effects to likes
+                    prLikesElement.style.color = '#8B0000';
+                    prLikesElement.style.transform = 'scale(1.1)';
+                    
+                    // Add visual effects to KILO amount
+                    if (prKiloElement) {
+                        prKiloElement.style.color = '#fff';
+                        prKiloElement.style.transform = 'scale(1.1)';
+                    }
+                    
+                    // Add visual effects to balance
+                    if (kiloBalanceElement) {
+                        kiloBalanceElement.style.color = '#fff';
+                        kiloBalanceElement.style.transform = 'scale(1.05)';
+                    }
+                    
+                    // Add visual effects to balance USD
+                    if (kiloBalanceUsdElement) {
+                        kiloBalanceUsdElement.style.color = '#fff';
+                        kiloBalanceUsdElement.style.transform = 'scale(1.05)';
+                    }
+                    
+                    setTimeout(() => {
+                        prLikesElement.style.color = '#fff';
+                        prLikesElement.style.transform = 'scale(1)';
+                        
+                        if (prKiloElement) {
+                            prKiloElement.style.color = '#8B0000';
+                            prKiloElement.style.transform = 'scale(1)';
+                        }
+                        
+                        if (kiloBalanceElement) {
+                            kiloBalanceElement.style.color = '#8B0000';
+                            kiloBalanceElement.style.transform = 'scale(1)';
+                        }
+                        
+                        if (kiloBalanceUsdElement) {
+                            kiloBalanceUsdElement.style.color = '#888';
+                            kiloBalanceUsdElement.style.transform = 'scale(1)';
+                        }
+                    }, 200);
+                }
+            }, 3000);
         });
     </script>
 </head>
@@ -1474,8 +1567,8 @@
                                 <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333;">
                                     <span style="font-size: 14px; color: #888;">KILO BALANCE</span>
                                     <div style="text-align: right;">
-                                        <div id="kiloBalance" style="font-size: 16px; font-weight: 600; color: #8B0000;">2,264</div>
-                                        <div style="font-size: 12px; color: #888; margin-top: 2px;">$2,785 USD</div>
+                                        <div id="kiloBalance" style="font-size: 16px; font-weight: 600; color: #8B0000; transition: all 0.2s ease;">2,264</div>
+                                        <div style="font-size: 12px; color: #888; margin-top: 2px; transition: all 0.2s ease;" id="kiloBalanceUsd">$2,785 USD</div>
                                     </div>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333;">
@@ -1547,8 +1640,8 @@
                                             <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">PR</div>
                                         </div>
                                         <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">247 KILO</div>
-                                            <div style="font-size: 11px; color: #666; margin-top: 2px;">$303.81 USD</div>
+                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000; transition: all 0.2s ease;" id="prKiloAmount">247 KILO</div>
+                                            <div style="font-size: 11px; color: #666; margin-top: 2px; transition: all 0.2s ease;" id="prKiloUsd">$303.81 USD</div>
                                         </div>
                                     </div>
                                     <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
@@ -1561,7 +1654,7 @@
                                             <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
                                         </div>
                                         <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">247</div>
+                                            <div style="font-size: 12px; font-weight: 600; color: #fff; transition: all 0.2s ease;" id="prLikesCount">247</div>
                                             <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
                                         </div>
                                     </div>
