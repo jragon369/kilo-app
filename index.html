@@ -880,21 +880,25 @@
             const kiloInput = parseFloat(kiloInputElement.value) || 0;
             const conversionRate = 0.00001; // 1 KILO = 0.00001 BTC
             const networkFeePercent = 0.03; // 3% fee
+            const btcUsdPrice = 45000; // BTC price in USD
             
             // Calculate fee and final amounts
             const feeAmount = Math.round(kiloInput * networkFeePercent);
             const kiloAfterFee = kiloInput - feeAmount;
             const btcAmount = kiloInput * conversionRate;
             const btcAfterFee = kiloAfterFee * conversionRate;
+            const usdAmount = btcAfterFee * btcUsdPrice;
             
             // Update display if elements exist
             const btcOutput = document.getElementById('btcOutput');
             const networkFee = document.getElementById('networkFee');
             const finalBTC = document.getElementById('finalBTC');
+            const finalUSD = document.getElementById('finalUSD');
             
-            if (btcOutput) btcOutput.value = btcAmount.toFixed(6);
+            if (btcOutput) btcOutput.textContent = btcAmount.toFixed(6);
             if (networkFee) networkFee.textContent = `${feeAmount} KILO`;
             if (finalBTC) finalBTC.textContent = `${btcAfterFee.toFixed(6)} BTC`;
+            if (finalUSD) finalUSD.textContent = `${usdAmount.toFixed(2)} USD`;
         }
         
         function executeConversion() {
@@ -911,8 +915,8 @@
                 return;
             }
             
-            // Calculate fee
-            const feeAmount = Math.round(kiloInput * networkFeePercent);
+            // Calculate fee (keep fractional)
+            const feeAmount = kiloInput * networkFeePercent;
             const totalDeduction = kiloInput;
             
             // Update balance
@@ -920,12 +924,43 @@
             document.getElementById('kiloBalance').textContent = currentKilo.toLocaleString();
             
             // Show success message
-            alert(`Successfully converted ${kiloInput} KILO to BTC!\n\nNetwork fee: ${feeAmount} KILO\nNew balance: ${currentKilo} KILO`);
+            alert(`Successfully converted ${kiloInput} KILO to BTC!\n\nNetwork fee: ${feeAmount.toFixed(2)} KILO\nNew balance: ${currentKilo} KILO`);
             
             // Reset and close convert interface
             toggleConvertInterface();
             document.getElementById('kiloInput').value = '1000';
             updateConversion();
+        }
+
+        function showSettingsPopup() {
+            const popup = document.getElementById('settingsPopup');
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.opacity = '1';
+                document.getElementById('settingsInput').focus();
+            }, 10);
+        }
+
+        function hideSettingsPopup() {
+            const popup = document.getElementById('settingsPopup');
+            popup.style.opacity = '0';
+            setTimeout(() => {
+                popup.style.display = 'none';
+                document.getElementById('settingsInput').value = '';
+            }, 200);
+        }
+
+        function handleSettingsInput(event) {
+            if (event.key === 'Enter') {
+                const input = event.target.value.trim();
+                if (input) {
+                    console.log('Settings input:', input);
+                    // Handle settings input here
+                }
+                hideSettingsPopup();
+            } else if (event.key === 'Escape') {
+                hideSettingsPopup();
+            }
         }
 
         // Set up event listeners after DOM is loaded
@@ -1110,11 +1145,21 @@
             </div>
            
             <div class="main-content">
+                <!-- Settings Popup -->
+                <div id="settingsPopup" style="display: none; position: absolute; top: 60px; right: 20px; z-index: 1000; opacity: 0; transition: opacity 0.2s ease;">
+                    <input type="text" id="settingsInput" placeholder="Customize..." onkeydown="handleSettingsInput(event)" onblur="hideSettingsPopup()" style="background: #222; border: 1px solid #444; color: #fff; padding: 12px 16px; border-radius: 20px; font-size: 14px; outline: none; width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.6);" />
+                </div>
+
                 <!-- HOME SECTION -->
                 <div class="section home-section active">
                     <div style="padding: 20px; position: relative;">
-                        <!-- Gear Icon - Top Right Corner -->
-                        <div style="position: absolute; top: 20px; right: 20px; color: #666; font-size: 18px; cursor: pointer;">⚙️</div>
+                        <!-- Settings Icon - Top Right Corner -->
+                        <div onclick="showSettingsPopup()" style="position: absolute; top: 20px; right: 20px; color: #666; font-size: 18px; cursor: pointer; padding: 4px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
                        
                         <!-- Profile Picture -->
                         <div style="width: 80px; height: 80px; background: #333; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 12px;">
@@ -1227,9 +1272,13 @@
                                 </svg>
                             </div>
                             <div onclick="switchHomeTab('feed')" class="home-tab-icon" id="feedTab" style="padding: 8px 16px; color: #666; font-size: 14px; cursor: pointer; transition: all 0.3s ease;">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
-                                    <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="4" cy="6" r="2"/>
+                                    <circle cx="4" cy="12" r="2"/>
+                                    <circle cx="4" cy="18" r="2"/>
+                                    <line x1="10" y1="6" x2="21" y2="6"/>
+                                    <line x1="10" y1="12" x2="21" y2="12"/>
+                                    <line x1="10" y1="18" x2="21" y2="18"/>
                                 </svg>
                             </div>
                         </div>
@@ -1608,7 +1657,6 @@
                                             <span>BTC</span>
                                         </div>
                                     </div>
-                                    <div style="color: #666; font-size: 12px; margin-top: 4px;">1 KILO = 0.00001 BTC</div>
                                 </div>
                                
                                 <div style="background: #1a1a1a; border-radius: 8px; padding: 12px; margin: 16px 0;">
@@ -1616,13 +1664,17 @@
                                         <span>Network Fee (3%)</span>
                                         <span id="networkFee">30 KILO</span>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0; font-weight: 600; color: #fff; font-size: 14px;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-weight: 600; color: #fff; font-size: 14px;">
                                         <span>You'll receive</span>
                                         <span id="finalBTC">0.0097 BTC</span>
                                     </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0; color: #ccc; font-size: 14px;">
+                                        <span>USD</span>
+                                        <span id="finalUSD">$1,193.10</span>
+                                    </div>
                                 </div>
                                 
-                                <button onclick="executeConversion()" style="width: 100%; padding: 12px; background: #4CAF50; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 8px;">Confirm Conversion</button>
+                                <button onclick="executeConversion()" style="width: 100%; padding: 12px; background: #333; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 8px;">Confirm Conversion</button>
                             </div>
 
                             <!-- Convert Button -->
@@ -1988,7 +2040,7 @@
                        
                         <div style="flex: 1; padding: 16px; overflow-y: auto;" id="chatContainer">
                             <div style="background: #333; padding: 12px 16px; border-radius: 16px; margin-bottom: 12px; font-size: 14px;">
-                                My name is K, the Chief Protocol Officer for KILO. How can I assist?
+                                I am K, the Chief Protocol Officer for KILO. How can I assist?
                             </div>
                         </div>
                        
@@ -2002,15 +2054,15 @@
            
             <div class="bottom-nav">
                 <div class="nav-item active" onclick="showSection('home')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
+                    <svg width="23" height="23" viewBox="0 0 24 24" style="opacity: 0.8;">
                         <path d="M12 3l8 7v11h-5v-6h-6v6H4V10l8-7z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
                     </svg>
                     <span>Home</span>
                 </div>
                 <div class="nav-item" onclick="showSection('connect')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
-                        <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none"/>
-                        <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                     </svg>
                     <span>Connect</span>
                 </div>
