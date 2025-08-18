@@ -1063,10 +1063,10 @@
                         prKiloElement.textContent = `${prKilo} KILO`;
                     }
                     
-                    // Update USD value on PR card
+                    // Update USD value on PR card - WITH DOLLAR SIGN
                     if (prKiloUsdElement) {
                         const usdValue = (prKilo * 1.23).toFixed(2); // $1.23 per KILO
-                        prKiloUsdElement.textContent = `${usdValue} USD`;
+                        prKiloUsdElement.textContent = `$${usdValue} USD`;
                     }
                     
                     // Update total balance (99 base + all moment KILO including updated PR)
@@ -1078,10 +1078,10 @@
                         kiloBalanceElement.textContent = currentKilo.toLocaleString();
                     }
                     
-                    // Update main balance USD value
+                    // Update main balance USD value - WITH DOLLAR SIGN
                     if (kiloBalanceUsdElement) {
                         const totalUsdValue = (currentKilo * 1.23).toFixed(0);
-                        kiloBalanceUsdElement.textContent = `${parseInt(totalUsdValue).toLocaleString()} USD`;
+                        kiloBalanceUsdElement.textContent = `$${parseInt(totalUsdValue).toLocaleString()} USD`;
                     }
                     
                     // Update available balance in convert interface if visible
@@ -1127,7 +1127,7 @@
                         }
                         
                         if (kiloBalanceUsdElement) {
-                            kiloBalanceUsdElement.style.color = '#888';
+                            kiloBalanceUsdElement.style.color = '#fff';  // STAYS WHITE
                             kiloBalanceUsdElement.style.transform = 'scale(1)';
                         }
                     }, 200);
@@ -1601,12 +1601,30 @@
                         <div style="padding: 20px; display: flex; flex-direction: column; gap: 15px;">
                             <!-- Avatar -->
                             <div style="background: #111; padding: 20px; border-radius: 16px; text-align: center;">
-                                <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #FFB74D, #9C27B0); border-radius: 16px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 18px;">
-                                    <svg width="40" height="50" viewBox="0 0 40 50">
-                                        <path d="M5 8 L20 23 L5 38" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                        <path d="M20 23 L35 8" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                        <path d="M20 23 L20 42" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                                        <path d="M20 23 L35 38" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                                <div style="width: 80px; height: 80px; background: linear-gradient(45deg, #FF6B6B, #4ECDC4, #FFB74D, #9C27B0); border-radius: 16px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 18px; position: relative; overflow: hidden;">
+                                    <!-- Futuristic Human Avatar -->
+                                    <svg width="50" height="50" viewBox="0 0 60 60">
+                                        <!-- Head -->
+                                        <ellipse cx="30" cy="20" rx="12" ry="14" fill="rgba(255,255,255,0.9)" opacity="0.9"/>
+                                        <!-- Tech visor/eyes -->
+                                        <rect x="18" y="17" width="24" height="3" fill="#00ffff" opacity="0.8"/>
+                                        <rect x="20" y="17" width="5" height="3" fill="#fff"/>
+                                        <rect x="35" y="17" width="5" height="3" fill="#fff"/>
+                                        <!-- Body -->
+                                        <path d="M20 32 L20 45 L25 50 L35 50 L40 45 L40 32" stroke="rgba(255,255,255,0.9)" stroke-width="2" fill="rgba(255,255,255,0.7)"/>
+                                        <!-- Tech details on body -->
+                                        <rect x="28" y="35" width="4" height="8" fill="#00ffff" opacity="0.6"/>
+                                        <circle cx="30" cy="38" r="2" fill="#fff" opacity="0.9"/>
+                                        <!-- Shoulders -->
+                                        <circle cx="18" cy="32" r="3" fill="rgba(255,255,255,0.8)"/>
+                                        <circle cx="42" cy="32" r="3" fill="rgba(255,255,255,0.8)"/>
+                                        <!-- Neural connections -->
+                                        <line x1="30" y1="14" x2="30" y2="8" stroke="#00ffff" stroke-width="1" opacity="0.5"/>
+                                        <line x1="25" y1="15" x2="20" y2="10" stroke="#00ffff" stroke-width="1" opacity="0.5"/>
+                                        <line x1="35" y1="15" x2="40" y2="10" stroke="#00ffff" stroke-width="1" opacity="0.5"/>
+                                        <circle cx="30" cy="8" r="1.5" fill="#00ffff" opacity="0.7"/>
+                                        <circle cx="20" cy="10" r="1.5" fill="#00ffff" opacity="0.7"/>
+                                        <circle cx="40" cy="10" r="1.5" fill="#00ffff" opacity="0.7"/>
                                     </svg>
                                 </div>
                                 <div style="font-size: 14px; color: #fff; font-weight: 600;">Avatar #1.1.001</div>
@@ -1617,8 +1635,8 @@
                                 <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333;">
                                     <span style="font-size: 14px; color: #888;">KILO BALANCE</span>
                                     <div style="text-align: right;">
-                                        <div id="kiloBalance" style="font-size: 16px; font-weight: 600; color: #8B0000; transition: all 0.2s ease;">2,264</div>
-                                        <div style="font-size: 12px; color: #888; margin-top: 2px; transition: all 0.2s ease;" id="kiloBalanceUsd">$2,785 USD</div>
+                                        <div id="kiloBalance" style="font-size: 18px; font-weight: 600; color: #8B0000; transition: all 0.2s ease;">2,264</div>
+                                        <div style="font-size: 12px; color: #fff; margin-top: 2px; transition: all 0.2s ease;" id="kiloBalanceUsd">$2,785 USD</div>
                                     </div>
                                 </div>
                                 <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333;">
@@ -1745,229 +1763,7 @@
                                     </div>
                                 </div>
 
-                                <!-- KILO CLUB NYC Moment -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 4px; font-weight: 300; letter-spacing: 1px; color: #fff; white-space: nowrap;">KILO CLUB</div>
-                                            <div style="font-size: 3px; font-weight: 400; letter-spacing: 0.3px; color: #fff; opacity: 0.7;">NYC</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">KILO CLUB</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">NYC</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">420 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$516.60 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">7/29/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">18</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">420</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- KILO CLUB HONOLULU Moment -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 4px; font-weight: 300; letter-spacing: 1px; color: #fff; white-space: nowrap;">KILO CLUB</div>
-                                            <div style="font-size: 3px; font-weight: 400; letter-spacing: 0.3px; color: #fff; opacity: 0.7;">HONOLULU</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">KILO CLUB</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">HONOLULU</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">89 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$109.47 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">7/25/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">15</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">89</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- FOOTBALL 1 v 1 Moment -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 4.5px; font-weight: 300; letter-spacing: 1px; color: #fff;">FOOTBALL</div>
-                                            <div style="font-size: 3px; font-weight: 400; letter-spacing: 0.3px; color: #fff; opacity: 0.7;">GLOBAL</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">FOOTBALL</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">1 v 1</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">156 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$191.88 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">7/18/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">21</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">156</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- FITNESS Moment (was 3 RM DEADLIFT) -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 5px; font-weight: 300; letter-spacing: 1.5px; color: #fff;">FITNESS</div>
-                                            <div style="font-size: 3px; font-weight: 400; letter-spacing: 0.3px; color: #fff; opacity: 0.7;">GLOBAL</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">3 RM</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">DEADLIFT</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">43 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$52.89 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">7/11/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">9</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">43</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- ARTISTS TOKYO Moment -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 5px; font-weight: 300; letter-spacing: 1.5px; color: #fff;">ARTISTS</div>
-                                            <div style="font-size: 3px; font-weight: 400; letter-spacing: 0.3px; color: #fff; opacity: 0.7;">TOKYO</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">ARTISTS</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">TOKYO</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">312 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$383.76 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">7/8/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">42</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">312</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- MUSICIANS VIENNA Moment -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 4px; font-weight: 300; letter-spacing: 1px; color: #fff;">MUSICIANS</div>
-                                            <div style="font-size: 3px; font-weight: 400; letter-spacing: 0.3px; color: #fff; opacity: 0.7;">VIENNA</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">MUSICIANS</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">VIENNA</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">78 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$95.94 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">7/5/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">11</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">78</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- TANGO RIO DE JANEIRO Moment -->
-                                <div style="background: #111; border-radius: 16px; padding: 12px; margin-bottom: 12px; border: 1px solid #333; transition: all 0.3s ease; cursor: pointer;" onmouseenter="this.style.borderColor='#444'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 5px 20px rgba(0,0,0,0.5)';" onmouseleave="this.style.borderColor='#333'; this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 10px;">
-                                        <div style="width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 2px solid #8B0000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                                            <div style="font-size: 5px; font-weight: 300; letter-spacing: 2px; color: #fff;">TANGO</div>
-                                            <div style="font-size: 2.5px; font-weight: 400; letter-spacing: 0.2px; color: #fff; opacity: 0.7;">RIO DE JANEIRO</div>
-                                        </div>
-                                        <div style="flex: 1;">
-                                            <div style="font-size: 14px; font-weight: 600; color: #fff; text-transform: uppercase; letter-spacing: 0.5px;">TANGO</div>
-                                            <div style="font-size: 10px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-top: 2px;">RIO DE JANEIRO</div>
-                                        </div>
-                                        <div style="text-align: right;">
-                                            <div style="font-size: 13px; font-weight: bold; color: #8B0000;">201 KILO</div>
-                                            <div style="font-size: 11px; color: #fff; margin-top: 2px;">$247.23 USD</div>
-                                        </div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; padding-top: 10px; border-top: 1px solid #222;">
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">6/30/25</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Date</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">27</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Witnesses</div>
-                                        </div>
-                                        <div style="text-align: center; flex: 1;">
-                                            <div style="font-size: 12px; font-weight: 600; color: #fff;">201</div>
-                                            <div style="font-size: 10px; color: #666; text-transform: uppercase; margin-top: 2px;">Likes</div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- More moment cards would go here... -->
                             </div>
                         </div>
                     </div>
