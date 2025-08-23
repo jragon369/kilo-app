@@ -84,7 +84,7 @@
             align-items: center;
             gap: 4px;
             color: #666;
-            font-size: 10px;
+            font-size: 9.7px;
             cursor: pointer;
             padding: 8px;
             transition: all 0.3s ease;
@@ -684,10 +684,23 @@
             // Show K's response area
             responseArea.style.display = 'block';
             
-            // Simulate K processing the query with red text
-            responseText.innerHTML = `<span style="color: #8B0000;">Searching across all collectives for:</span> "${query}"...`;
+            // Simulate K processing the query with pulsing red text
+            responseText.innerHTML = `<span id="searchingPulse" style="color: #8B0000; animation: searchPulse 1.6s ease-in-out infinite;">Searching across all collectives for:</span> "${query}"...`;
             
-            // Simulate search results after a longer delay (3x = 2400ms)
+            // Add the CSS animation dynamically
+            if (!document.getElementById('searchPulseStyles')) {
+                const style = document.createElement('style');
+                style.id = 'searchPulseStyles';
+                style.textContent = `
+                    @keyframes searchPulse {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0.3; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Simulate search results after a longer delay (6x = 4800ms)
             setTimeout(() => {
                 const momentsGrid = document.getElementById('momentsGrid');
                 
@@ -743,6 +756,46 @@
                             <div style="font-weight: bold;">FREE THROW</div>
                             <div style="font-size: 8px; opacity: 0.8;">84% • 42/50</div>
                             <div style="font-size: 9px; margin-top: 4px;">267 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #8E24AA, #673AB7); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">82% • 41/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">234 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FFA726, #FF9800); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">80% • 40/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">201 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #42A5F5, #2196F3); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">78% • 39/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">178 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #66BB6A, #4CAF50); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">76% • 38/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">156 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF7043, #E64A19); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">74% • 37/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">134 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #AB47BC, #9C27B0); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">72% • 36/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">112 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #29B6F6, #03A9F4); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">70% • 35/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">98 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #8BC34A, #689F38); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FREE THROW</div>
+                            <div style="font-size: 8px; opacity: 0.8;">68% • 34/50</div>
+                            <div style="font-size: 9px; margin-top: 4px;">87 KILO</div>
                         </div>`;
                         
                 } else if (query.toLowerCase().includes('vegas')) {
@@ -793,6 +846,46 @@
                             <div style="font-weight: bold;">MEDITATION</div>
                             <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
                             <div style="font-size: 9px; margin-top: 4px;">45 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF6B6B, #F44336); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">KICKBOXING</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">201 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #42A5F5, #1976D2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">SWIMMING</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">178 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #8BC34A, #689F38); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">PILATES</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">134 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF9800, #F57C00); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">ROCK CLIMB</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">267 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #E91E63, #C2185B); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">DANCE</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">112 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #00BCD4, #0097A7); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">ROWING</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">198 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #795548, #5D4037); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">MARTIAL ARTS</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">87 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #9C27B0, #7B1FA2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">STRETCHING</div>
+                            <div style="font-size: 8px; opacity: 0.8;">LAS VEGAS</div>
+                            <div style="font-size: 9px; margin-top: 4px;">76 KILO</div>
                         </div>`;
                         
                 } else if (query.toLowerCase().includes('tokyo') || query.toLowerCase().includes('artist')) {
@@ -843,12 +936,52 @@
                             <div style="font-weight: bold;">IKEBANA</div>
                             <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
                             <div style="font-size: 9px; margin-top: 4px;">98 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF5722, #D84315); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">WOODWORK</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">234 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #3F51B5, #303F9F); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">PRINTMAKING</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">145 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #4CAF50, #388E3C); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">TEXTILES</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">189 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF9800, #F57C00); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">METALWORK</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">176 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #E91E63, #C2185B); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">THEATER</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">201 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #607D8B, #455A64); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">PHOTOGRAPHY</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">154 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #9E9E9E, #616161); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">FILM</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">312 KILO</div>
+                        </div>
+                        <div style="aspect-ratio: 1; background: linear-gradient(45deg, #795548, #5D4037); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                            <div style="font-weight: bold;">POTTERY</div>
+                            <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                            <div style="font-size: 9px; margin-top: 4px;">87 KILO</div>
                         </div>`;
                         
                 } else {
                     responseText.innerHTML = `Found <span style="color: #8B0000; font-weight: 600;">42 moments</span> matching "${query}". Showing most valuable by KILO earned.`;
                 }
-            }, 2400); // 3x the original 800ms delay
+            }, 9600); // 6 pulses × 1.6s = 9.6s total
         }
 
         function startProximityDemo() {
@@ -1722,6 +1855,48 @@
                                 <div style="font-size: 8px; opacity: 0.8;">NYC</div>
                                 <div style="font-size: 9px; margin-top: 4px;">420 KILO</div>
                             </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #8E24AA, #7B1FA2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div style="font-weight: bold;">BOXING</div>
+                                <div style="font-size: 8px; opacity: 0.8;">VEGAS</div>
+                                <div style="font-size: 9px; margin-top: 4px;">298 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FFA726, #F57C00); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div style="font-weight: bold;">CYCLING</div>
+                                <div style="font-size: 8px; opacity: 0.8;">HONOLULU</div>
+                                <div style="font-size: 9px; margin-top: 4px;">234 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #42A5F5, #1976D2); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div class="live-indicator"></div>
+                                <div style="font-weight: bold;">SWIMMING</div>
+                                <div style="font-size: 8px; opacity: 0.8;">VIENNA</div>
+                                <div style="font-size: 9px; margin-top: 4px;">167 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #FF5722, #D84315); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div style="font-weight: bold;">ROCK CLIMB</div>
+                                <div style="font-size: 8px; opacity: 0.8;">VEGAS</div>
+                                <div style="font-size: 9px; margin-top: 4px;">145 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #8BC34A, #689F38); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div style="font-weight: bold;">PILATES</div>
+                                <div style="font-size: 8px; opacity: 0.8;">NYC</div>
+                                <div style="font-size: 9px; margin-top: 4px;">98 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #795548, #5D4037); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; position: relative; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div class="live-indicator"></div>
+                                <div style="font-weight: bold;">CERAMICS</div>
+                                <div style="font-size: 8px; opacity: 0.8;">TOKYO</div>
+                                <div style="font-size: 9px; margin-top: 4px;">276 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #607D8B, #455A64); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div style="font-weight: bold;">MEDITATION</div>
+                                <div style="font-size: 8px; opacity: 0.8;">VIENNA</div>
+                                <div style="font-size: 9px; margin-top: 4px;">87 KILO</div>
+                            </div>
+                            <div style="aspect-ratio: 1; background: linear-gradient(45deg, #E91E63, #C2185B); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: white; cursor: pointer; transition: transform 0.2s ease;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'">
+                                <div style="font-weight: bold;">DANCE</div>
+                                <div style="font-size: 8px; opacity: 0.8;">RIO</div>
+                                <div style="font-size: 9px; margin-top: 4px;">123 KILO</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2221,36 +2396,36 @@
            
             <div class="bottom-nav">
                 <div class="nav-item active" onclick="showSection('home')">
-                    <svg width="26" height="26" viewBox="0 0 24 24" style="opacity: 0.8;">
+                    <svg width="25" height="25" viewBox="0 0 24 24" style="opacity: 0.8;">
                         <path d="M12 3l8 7v11h-5v-6h-6v6H4V10l8-7z" stroke="currentColor" stroke-width="2" fill="none" stroke-linejoin="round"/>
                     </svg>
-                    <span style="margin-top: 3px;">HOME</span>
+                    <span>HOME</span>
                 </div>
-                <div class="nav-item" onclick="showSection('connect')" style="margin-right: 5px;">
+                <div class="nav-item" onclick="showSection('connect')" style="margin-right: 8px;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                     </svg>
-                    <span style="margin-top: 4px;">CONNECT</span>
+                    <span>CONNECT</span>
                 </div>
                 <div class="nav-item mint-nav" onclick="showSection('mint')" style="position: relative;">
                     <div class="mint-nav-ring" style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #333; border-radius: 50%;"></div>
                 </div>
-                <div class="nav-item" onclick="showSection('wallet')" style="margin-left: 5px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" style="opacity: 0.8;">
+                <div class="nav-item" onclick="showSection('wallet')" style="margin-left: 8px;">
+                    <svg width="23" height="23" viewBox="0 0 24 24" style="opacity: 0.8;">
                         <!-- Crypto Wallet: Equilateral Hexagon with center line -->
                         <path d="M12 2l9 5.2v9.6L12 22l-9-5.2V7.2L12 2z" stroke="currentColor" stroke-width="2" fill="none"/>
                         <path d="M12 7.2v9.6" stroke="currentColor" stroke-width="1.5"/>
                     </svg>
-                    <span style="margin-top: 3px;">WALLET</span>
+                    <span>WALLET</span>
                 </div>
                 <div class="nav-item ai-nav" onclick="showSection('ai')">
-                    <svg width="24" height="24" viewBox="0 0 24 24" style="opacity: 0.8;">
+                    <svg width="25" height="25" viewBox="0 0 24 24" style="opacity: 0.8;">
                         <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" fill="none"/>
                         <circle cx="9" cy="11.5" r="1.5" fill="currentColor"/>
                         <circle cx="15" cy="11.5" r="1.5" fill="currentColor"/>
                     </svg>
-                    <span style="margin-top: 3px;">AI</span>
+                    <span>AI</span>
                 </div>
             </div>
         </div>
