@@ -981,7 +981,7 @@
                 } else {
                     responseText.innerHTML = `Found <span style="color: #8B0000; font-weight: 600;">42 moments</span> matching "${query}". Showing most valuable by KILO earned.`;
                 }
-            }, 9600); // 6 pulses × 1.6s = 9.6s total
+            }, 6400); // 4 pulses × 1.6s = 6.4s total
         }
 
         function startProximityDemo() {
@@ -1387,7 +1387,7 @@
                     // Update USD value on PR card - WITH DOLLAR SIGN
                     if (prKiloUsdElement) {
                         const usdValue = (prKilo * 1.23).toFixed(2); // $1.23 per KILO
-                        prKiloUsdElement.textContent = `$${usdValue} USD`;
+                        prKiloUsdElement.textContent = `${usdValue} USD`;
                     }
                     
                     // Update total balance (99 base + all moment KILO including updated PR)
@@ -1402,7 +1402,7 @@
                     // Update main balance USD value - WITH DOLLAR SIGN
                     if (kiloBalanceUsdElement) {
                         const totalUsdValue = (currentKilo * 1.23).toFixed(0);
-                        kiloBalanceUsdElement.textContent = `$${parseInt(totalUsdValue).toLocaleString()} USD`;
+                        kiloBalanceUsdElement.textContent = `${parseInt(totalUsdValue).toLocaleString()} USD`;
                     }
                     
                     // Update available balance in convert interface if visible
@@ -2401,7 +2401,7 @@
                     </svg>
                     <span>HOME</span>
                 </div>
-                <div class="nav-item" onclick="showSection('connect')" style="margin-right: 8px;">
+                <div class="nav-item" onclick="showSection('connect')" style="margin-right: 8px; gap: 5px;">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity: 0.8;">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
@@ -2411,7 +2411,7 @@
                 <div class="nav-item mint-nav" onclick="showSection('mint')" style="position: relative;">
                     <div class="mint-nav-ring" style="position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); border: 3px solid #333; border-radius: 50%;"></div>
                 </div>
-                <div class="nav-item" onclick="showSection('wallet')" style="margin-left: 8px;">
+                <div class="nav-item" onclick="showSection('wallet')" style="margin-left: 8px; gap: 5px;">
                     <svg width="23" height="23" viewBox="0 0 24 24" style="opacity: 0.8;">
                         <!-- Crypto Wallet: Equilateral Hexagon with center line -->
                         <path d="M12 2l9 5.2v9.6L12 22l-9-5.2V7.2L12 2z" stroke="currentColor" stroke-width="2" fill="none"/>
